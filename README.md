@@ -3,7 +3,6 @@
 **Raira** (or stylized as **RΛIRΛ**) is a playful, cyberpunk-inspired testing system — built to make testing feel fun, immersive, and easy to use.
 Instead of boring scripts and checklists, Raira turns your workflow into a series of quests, challenges, and missions.
 
----
 
 ## Tech Stack
 
@@ -11,7 +10,6 @@ Instead of boring scripts and checklists, Raira turns your workflow into a serie
 - **Backend:** Elixir Phoenix
 - **Database:** SQLite
 
----
 ## Quick Start
 
 To start your Phoenix server:
