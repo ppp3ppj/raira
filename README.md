@@ -1,13 +1,27 @@
 # Raira
 
-To start your Phoenix server:
+**Raira** (or stylized as **RΛIRΛ**) is a playful, cyberpunk-inspired testing system — built to make testing feel fun, immersive, and easy to use.
+Instead of boring scripts and checklists, Raira turns your workflow into a series of quests, challenges, and missions.
 
+---
+
+## Tech Stack
+
+- **Frontend:** Elixir Phoenix
+- **Backend:** Elixir Phoenix
+- **Database:** SQLite
+
+---
+## Quick Start
+
+To start your Phoenix server:
 * Run `mix setup` to install and setup dependencies
 * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+
 
 ## Learn more
 
