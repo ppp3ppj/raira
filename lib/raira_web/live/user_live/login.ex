@@ -69,9 +69,8 @@ defmodule RairaWeb.UserLive.Login do
           <.input
             readonly={!!@current_scope}
             field={f[:email]}
-            type="email"
-            label="Email"
-            autocomplete="username"
+            type="text"
+            label="Username or email address"
             required
           />
           <.input
