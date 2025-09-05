@@ -95,7 +95,7 @@ defmodule RairaWeb.UserLive.Registration do
          socket
          |> put_flash(
            :info,
-           "Register successfully"
+           "Registered successfully"
          )
          |> push_navigate(to: ~p"/users/log-in")}
 
