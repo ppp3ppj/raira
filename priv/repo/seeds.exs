@@ -13,18 +13,21 @@
 alias Raira.Repo
 alias Raira.Accounts
 
+admin_flname = "admin"
 admin_email = "admin@admin.com"
 password = "supersecret123"
 admin_name = "admin"
 
+user_flname = "user"
 user_email = "user@user.com"
 user_name = "user"
+
 
 case Accounts.get_user_by_email(admin_email) do
   nil ->
     {:ok, _admin} = Accounts.register_user(%{
-      first_name: "TEST",
-      last_name: "TEST",
+      first_name: admin_flname,
+      last_name: admin_flname,
       username: admin_name,
       email: admin_email,
       password: password
@@ -39,8 +42,8 @@ end
 case Accounts.get_user_by_email(user_email) do
   nil ->
     {:ok, _user} = Accounts.register_user(%{
-      first_name: "TEST",
-      last_name: "TEST",
+      first_name: user_flname,
+      last_name: user_flname,
       username: user_name,
       email: user_email,
       password: password
