@@ -150,6 +150,41 @@
   --navbar-padding: 0.5rem;
 }
 
+@plugin "../vendor/daisyui-theme" {
+  name: "cyberpunk-phantom-liberty";
+  default: false;
+  prefersdark: false;
+  color-scheme: "dark";
+  --color-base-100: #270022;
+  --color-base-200: #09010d;
+  --color-base-300: #660f31;
+  --color-base-content: #ff0546;
+  --color-primary: #9c173b;
+  --color-primary-content: #0ce6f2;
+  --color-secondary: #660f31;
+  --color-secondary-content: #0ce6f2;
+  --color-accent: #450327;
+  --color-accent-content: #0ce6f2;
+  --color-neutral: #270022;
+  --color-neutral-content: #0ce6f2;
+  --color-info: #00eaff;
+  --color-info-content: #120016;
+  --color-success: #9c173b;
+  --color-success-content: #0ce6f2;
+  --color-warning: #ffb300;
+  --color-warning-content: #0a0012;
+  --color-error: #ff1744;
+  --color-error-content: #0a000d;
+  --radius-selector: 0rem;
+  --radius-field: 0rem;
+  --radius-box: 0rem;
+  --size-selector: 0.28125rem;
+  --size-field: 0.28125rem;
+  --border: 2px;
+  --depth: 0;
+  --noise: 0;
+}
+
 /* Add variants based on LiveView classes */
 @custom-variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);
 @custom-variant phx-submit-loading (.phx-submit-loading&, .phx-submit-loading &);
