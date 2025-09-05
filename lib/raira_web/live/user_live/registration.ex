@@ -26,10 +26,37 @@ defmodule RairaWeb.UserLive.Registration do
           <.input
             field={@form[:email]}
             type="email"
-            label="Email"
-            autocomplete="username"
+            label="Email *"
             required
             phx-mounted={JS.focus()}
+          />
+
+          <.input
+            field={@form[:password]}
+            type="password"
+            label="Password *"
+            required
+          />
+
+          <.input
+            field={@form[:username]}
+            type="text"
+            label="Username *"
+            required
+          />
+
+          <.input
+            field={@form[:first_name]}
+            type="text"
+            label="First Name *"
+            required
+          />
+
+          <.input
+            field={@form[:last_name]}
+            type="text"
+            label="Last Name *"
+            required
           />
 
           <.button phx-disable-with="Creating account..." class="btn btn-primary w-full">
@@ -57,17 +84,18 @@ defmodule RairaWeb.UserLive.Registration do
   def handle_event("save", %{"user" => user_params}, socket) do
     case Accounts.register_user(user_params) do
       {:ok, user} ->
-        {:ok, _} =
-          Accounts.deliver_login_instructions(
-            user,
-            &url(~p"/users/log-in/#{&1}")
-          )
+        #{:ok, _} =
+
+        #  Accounts.deliver_login_instructions(
+        #    user,
+        #    &url(~p"/users/log-in/#{&1}")
+        #  )
 
         {:noreply,
          socket
          |> put_flash(
            :info,
-           "An email was sent to #{user.email}, please access it to confirm your account."
+           "Register successfully"
          )
          |> push_navigate(to: ~p"/users/log-in")}
 
