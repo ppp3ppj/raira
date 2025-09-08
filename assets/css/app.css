@@ -91,6 +91,100 @@
   --noise: 0;
 }
 
+@plugin "../vendor/daisyui-theme" {
+  name: "cyberpunk";
+  default: false;
+  prefersdark: false;
+  color-scheme: "light";
+
+  /* Base colors */
+  --color-base-100: oklch(0.933 0.1973 104.32);   /* #ffee00 */
+  --color-base-200: oklch(0.8183 0.173184 104.4865);   /* #d6c800 */
+  --color-base-300: oklch(0.7291 0.154 104.09);   /* #b8ab00 */
+  --color-base-content: oklch(0 0 0);           /* black */
+
+  /* Primary */
+  --color-primary: oklch(76.5% 0.213 354.54);    /* #ff7094 */
+  --color-primary-focus: oklch(73.7% 0.223 354.44); /* #ff5784 */
+  --color-primary-content: oklch(0 0 0);        /* black */
+
+  /* Secondary */
+  --color-secondary: oklch(0.815 0.0979 222.08);  /* #75d1f0 */
+  --color-secondary-focus: oklch(0.7537 0.1016 220.51); /* #5bbedc */
+  --color-secondary-content: oklch(0 0 0);      /* black */
+
+  /* Accent */
+  --color-accent: oklch(0.7039 0.1676 310.43);     /* #c07eec */
+  --color-accent-focus: oklch(0.6219 0.2173 309.18); /* #ad55e7 */
+  --color-accent-content: oklch(0 0 0);         /* black */
+
+  /* Neutral */
+  --color-neutral: oklch(0.3405 0.072775 106.4331);     /* #3d3a00 */
+  --color-neutral-focus: oklch(0.1358 0.0248 109.29);/* #090901 */
+  --color-neutral-content: oklch(0.933 0.1973 104.32); /* #ffee00 */
+
+  /* Feedback colors */
+  --color-info: oklch(0.6479 0.1726 249.75);       /* #1c92f2 */
+  --color-success: oklch(0.5982 0.10687 182.4689);    /* #009485 */
+  --color-warning: oklch(0.772 0.1738 64.55);     /* #ff9900 */
+  --color-error: oklch(0.6793 0.2125 36.25);       /* #ff5724 */
+
+  --color-info-content: oklch(0% 0 0);
+  --color-success-content: oklch(0% 0 0);
+  --color-warning-content: oklch(0% 0 0);
+  --color-error-content: oklch(0% 0 0);
+
+  /* Other settings */
+  --radius-selector: 0;
+  --radius-field: 0;
+  --radius-box: 0;
+  --size-selector: 0.21875rem;
+  --size-field: 0.21875rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+
+  --animation-btn: 0.25s;
+  --animation-input: 0.2s;
+  --btn-text-case: uppercase;
+  --navbar-padding: 0.5rem;
+}
+
+@plugin "../vendor/daisyui-theme" {
+  name: "cyberpunk-phantom-liberty";
+  default: false;
+  prefersdark: false;
+  color-scheme: "dark";
+  --color-base-100: #270022;
+  --color-base-200: #09010d;
+  --color-base-300: #660f31;
+  --color-base-content: #ff0546;
+  --color-primary: #9c173b;
+  --color-primary-content: #0ce6f2;
+  --color-secondary: #660f31;
+  --color-secondary-content: #0ce6f2;
+  --color-accent: #450327;
+  --color-accent-content: #0ce6f2;
+  --color-neutral: #270022;
+  --color-neutral-content: #0ce6f2;
+  --color-info: #00eaff;
+  --color-info-content: #120016;
+  --color-success: #9c173b;
+  --color-success-content: #0ce6f2;
+  --color-warning: #ffb300;
+  --color-warning-content: #0a0012;
+  --color-error: #ff1744;
+  --color-error-content: #0a000d;
+  --radius-selector: 0rem;
+  --radius-field: 0rem;
+  --radius-box: 0rem;
+  --size-selector: 0.28125rem;
+  --size-field: 0.28125rem;
+  --border: 2px;
+  --depth: 0;
+  --noise: 0;
+}
+
 /* Add variants based on LiveView classes */
 @custom-variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);
 @custom-variant phx-submit-loading (.phx-submit-loading&, .phx-submit-loading &);
