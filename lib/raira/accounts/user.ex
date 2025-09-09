@@ -11,7 +11,25 @@ defmodule Raira.Accounts.User do
     field :confirmed_at, :utc_datetime
     field :authenticated_at, :utc_datetime, virtual: true
 
+    field :first_name, :string
+    field :last_name, :string
+    field :username, :string
+
     timestamps(type: :utc_datetime)
+  end
+
+  def registration_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email, :first_name, :last_name, :username, :password])
+    |> unique_constraint(:username)
+    |> validate_username()
+    |> validate_password(opts)
+  end
+
+  defp validate_username(changeset) do
+    changeset
+    |> validate_required([:username])
+    |> validate_length(:username, min: 3, max: 50)
   end
 
   @doc """
