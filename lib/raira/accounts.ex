@@ -44,6 +44,17 @@ defmodule Raira.Accounts do
     if User.valid_password?(user, password), do: user
   end
 
+  def get_user_by_identifier_and_password(identifier, password)
+      when is_binary(identifier) and is_binary(password) do
+    user =
+      from(u in User,
+        where: u.email == ^identifier or u.username == ^identifier
+      )
+      |> Repo.one()
+
+    if user && User.valid_password?(user, password), do: user
+  end
+
   @doc """
   Gets a single user.
 
