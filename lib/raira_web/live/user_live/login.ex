@@ -25,6 +25,7 @@ defmodule RairaWeb.UserLive.Login do
           </.header>
         </div>
 
+        <!--
         <div :if={local_mail_adapter?()} class="alert alert-info">
           <.icon name="hero-information-circle" class="size-6 shrink-0" />
           <div>
@@ -34,29 +35,7 @@ defmodule RairaWeb.UserLive.Login do
             </p>
           </div>
         </div>
-
-        <.form
-          :let={f}
-          for={@form}
-          id="login_form_magic"
-          action={~p"/users/log-in"}
-          phx-submit="submit_magic"
-        >
-          <.input
-            readonly={!!@current_scope}
-            field={f[:email]}
-            type="email"
-            label="Email"
-            autocomplete="username"
-            required
-            phx-mounted={JS.focus()}
-          />
-          <.button class="btn btn-primary w-full">
-            Log in with email <span aria-hidden="true">→</span>
-          </.button>
-        </.form>
-
-        <div class="divider">or</div>
+        -->
 
         <.form
           :let={f}

@@ -25,10 +25,6 @@ defmodule RairaWeb.UserLive.Registration do
         <.form for={@form} id="registration_form" phx-submit="save" phx-change="validate">
           <div class="card w-full max-w-md bg-base-100 shadow-sm">
             <div class="card-body">
-              <div class="text-center mb-6">
-                <h1>Create your account</h1>
-                <p>Join thousands of developers using our platform</p>
-              </div>
               <div class="grid  sm:grid-cols-1 md:grid-cols-2 gap-3">
                 <.input
                   field={@form[:first_name]}
@@ -80,17 +76,12 @@ defmodule RairaWeb.UserLive.Registration do
                 Create an account
               </.button>
 
+              <!--
               <div class="divider">or</div>
-
-              <.link navigate={~p"/users/log-in"} class="font-semibold text-brand hover:underline">
-                Log in
-              </.link>
+              -->
             </div>
           </div>
 
-          <.button phx-disable-with="Creating account..." class="btn btn-primary w-full">
-            Create an account
-          </.button>
         </.form>
       </div>
     </Layouts.app>
