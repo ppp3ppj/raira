@@ -52,6 +52,8 @@ defmodule RairaWeb.Router do
   scope "/", RairaWeb do
     pipe_through [:browser, :require_authenticated_user]
 
+    live "/app", HomeLive, :page
+
     live_session :require_authenticated_user,
       on_mount: [{RairaWeb.UserAuth, :require_authenticated}] do
       live "/users/settings", UserLive.Settings, :edit
