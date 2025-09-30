@@ -45,8 +45,16 @@ defmodule RairaWeb.UserLive.Login do
           phx-submit="submit_password"
           phx-trigger-action={@trigger_submit}
         >
+          <!--
           <.input
             readonly={!!@current_scope}
+            field={f[:email]}
+            type="text"
+            label="Username or email address"
+            required
+          />
+          -->
+          <.input
             field={f[:email]}
             type="text"
             label="Username or email address"
