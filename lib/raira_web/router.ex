@@ -20,7 +20,9 @@ defmodule RairaWeb.Router do
   scope "/", RairaWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    #get "/", PageController, :home
+    #live "/", LandingLive.Welcome
+    get "/", LandingPage.LandingPageController, :home
   end
 
   # Other scopes may use custom stacks.
