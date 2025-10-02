@@ -53,6 +53,7 @@ defmodule RairaWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live "/", HomeLive, :page
+    live "/settings", SettingsLive, :page
 
     live_session :require_authenticated_user,
       on_mount: [{RairaWeb.UserAuth, :require_authenticated}] do
