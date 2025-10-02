@@ -1,21 +1,21 @@
 defmodule RairaWeb.LayoutComponents do
   use RairaWeb, :html
 
+  import RairaWeb.UserComponents
+
   @doc """
   The layout used in the non-sessios pages.
   """
 
   attr :current_page, :string, required: true
-  # attr :current_scope, :map,
-  # default: nil,
-  #  doc: "the current [scope](https://hexdocs.pm/phoenix/scopes.html)"
+  attr :current_user, Raira.Accounts.User, required: true
   slot :inner_block, required: true
 
   def layout(assigns) do
     ~H"""
     <div class="flex grow h-full">
       <div class="absolute md:static h-full z-[600]">
-        <.sidebar current_page={@current_page} />
+        <.sidebar current_page={@current_page} current_user={@current_user}/>
       </div>
 
       <div class="grow overflow-y-auto">
@@ -38,12 +38,10 @@ defmodule RairaWeb.LayoutComponents do
       </div>
     </div>
 
-    <!-- fix it to modal -->
 
-    <!--
     <.current_user_modal current_user={@current_user} />
-    -->
     <p>Current page: {@current_page}</p>
+    <p>Current username: {@current_user.username}</p>
     """
   end
 
@@ -84,6 +82,7 @@ defmodule RairaWeb.LayoutComponents do
 
         <div class="flex flex-col">
           <button
+            :if={false}
             class="h-7 flex items-center text-gray-400 hover:text-white border-l-4 border-transparent hover:border-white"
             aria-label="logout"
             phx-click="logout"
@@ -94,11 +93,19 @@ defmodule RairaWeb.LayoutComponents do
           </button>
 
           <button
+            phx-click={show_current_user_modal()}
             class="mt-6 flex items-center group border-l-4 border-transparent"
             aria_label="user profile"
           >
+          <div class="w-[56px] flex justify-center">
+              <.user_avatar
+                user={@current_user}
+                class="w-8 h-8 group-hover:ring-white group-hover:ring-2"
+                text_class="text-xs"
+              />
+            </div>
             <span class="text-sm text-gray-400 font-medium group-hover:text-white">
-              Current
+              {@current_user.username}
             </span>
           </button>
         </div>

@@ -4,13 +4,14 @@ defmodule RairaWeb.HomeLive do
 
   @impl true
   def mount(_params, _session, socket) do
+    user = socket.assigns |> IO.inspect(label: "TEST")
     {:ok, assign(socket, self_path: ~p"/", page_title: "Home")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
-    <LayoutComponents.layout current_page={~p"/"}>
+    <LayoutComponents.layout current_page={~p"/"} current_user={@current_scope.user}>
       <div class="p-4 md:px-12 md:py-6 max-w-screen-lg mx-auto">
         <div class="flex flex-row space-y-0 items-center pb-4 justify-between">
           <LayoutComponents.title text="Home" />

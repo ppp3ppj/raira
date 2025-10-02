@@ -469,4 +469,105 @@ defmodule RairaWeb.CoreComponents do
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
+
+  @doc """
+  Wraps the given content in a modal dialog.
+
+  ## Example
+
+      <.modal id="edit-modal" patch={...}>
+        <.live_component module={MyComponent}  />
+      </.modal>
+
+  """
+  attr :id, :string, required: true
+  attr :show, :boolean, default: false
+  attr :patch, :string, default: nil
+  attr :navigate, :string, default: nil
+  attr :class, :string, default: nil
+  attr :width, :string, values: ~w(small medium big large), required: true
+  attr :rest, :global
+
+  slot :inner_block, required: true
+
+  def modal(assigns) do
+    ~H"""
+    <div
+      id={@id}
+      class="fixed z-[10000] inset-0 hidden"
+      phx-mounted={@show && show_modal(@id)}
+      phx-remove={hide_modal(@id)}
+      data-cancel={modal_on_cancel(@patch, @navigate)}
+      {@rest}
+    >
+      <!-- Modal container -->
+      <div id={"#{@id}-container"} class="h-screen flex items-center justify-center p-4">
+        <!-- Overlay -->
+        <div class="absolute z-0 inset-0 bg-gray-500 opacity-75" aria-hidden="true"></div>
+        <!-- Modal box -->
+        <.focus_wrap
+          id={"#{@id}-content"}
+          class={[
+            "relative max-h-full overflow-y-auto bg-white rounded-lg shadow-xl focus-visible:outline-none",
+            "w-full p-6",
+            modal_width_class(@width)
+          ]}
+          role="dialog"
+          aria-modal="true"
+          tabindex="0"
+          phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
+          phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
+          phx-key="escape"
+        >
+          <button
+            type="button"
+            class="absolute top-6 right-6 text-gray-400 flex space-x-1 items-center"
+            aria_label="close modal"
+            phx-click={JS.exec("data-cancel", to: "##{@id}")}
+          >
+            <span class="text-sm">(esc)</span>
+          <!--
+            <.remix_icon icon="close-line" class="text-2xl" />
+            -->
+          </button>
+          {render_slot(@inner_block)}
+        </.focus_wrap>
+      </div>
+    </div>
+    """
+  end
+
+  defp modal_width_class("small"), do: "max-w-sm"
+  defp modal_width_class("medium"), do: "max-w-xl"
+  defp modal_width_class("big"), do: "max-w-4xl"
+  defp modal_width_class("large"), do: "max-w-6xl"
+
+  defp modal_on_cancel(nil, nil), do: JS.exec("phx-remove")
+  defp modal_on_cancel(nil, navigate), do: JS.patch(navigate)
+  defp modal_on_cancel(patch, nil), do: JS.patch(patch)
+
+  @doc """
+  Shows a modal rendered with `modal/1`.
+  """
+  def show_modal(js \\ %JS{}, id) do
+    js
+    |> JS.show(to: "##{id}")
+    |> JS.dispatch("lb:focus", to: "##{id}-content")
+    |> JS.transition(
+      {"ease-out duration-200", "opacity-0", "opacity-100"},
+      to: "##{id}-container"
+    )
+  end
+
+  @doc """
+  Hides a modal rendered with `modal/1`.
+  """
+  def hide_modal(js \\ %JS{}, id) do
+    js
+    |> JS.transition(
+      {"ease-in duration-200", "opacity-100", "opacity-0"},
+      to: "##{id}-container"
+    )
+    |> JS.hide(to: "##{id}", transition: {"block", "block", "hidden"})
+  end
 end
