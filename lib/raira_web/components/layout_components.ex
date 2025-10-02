@@ -6,15 +6,16 @@ defmodule RairaWeb.LayoutComponents do
   """
 
   attr :current_page, :string, required: true
-  attr :current_scope, :map,
-    default: nil,
-    doc: "the current [scope](https://hexdocs.pm/phoenix/scopes.html)"
+  # attr :current_scope, :map,
+  # default: nil,
+  #  doc: "the current [scope](https://hexdocs.pm/phoenix/scopes.html)"
   slot :inner_block, required: true
+
   def layout(assigns) do
     ~H"""
     <div class="flex grow h-full">
       <div class="absolute md:static h-full z-[600]">
-        <.sidebar />
+        <.sidebar current_page={@current_page} />
       </div>
 
       <div class="grow overflow-y-auto">
@@ -41,6 +42,7 @@ defmodule RairaWeb.LayoutComponents do
     <!--
     <.current_user_modal current_user={@current_user} />
     -->
+    <p>Current page: {@current_page}</p>
     """
   end
 
@@ -69,9 +71,13 @@ defmodule RairaWeb.LayoutComponents do
               </span>
             </div>
 
-            <!--
-            <.sidebar_link title="Home" icon="home-6-line" to={~p"/"} current={@current_page} />
-            -->
+            <.sidebar_link title="Home" icon="hero-home" to={~p"/"} current={@current_page} />
+            <.sidebar_link
+              title="Settings"
+              icon="hero-cog-8-tooth"
+              to={~p"/settings"}
+              current={@current_page}
+            />
           </div>
         </div>
 
@@ -99,4 +105,42 @@ defmodule RairaWeb.LayoutComponents do
     </nav>
     """
   end
+
+  defp sidebar_link(assigns) do
+    ~H"""
+    <.link
+      navigate={@to}
+      class={[
+        "h-7 flex items-center hover:text-white border-l-4 hover:border-white",
+        sidebar_link_text_color(@to, @current),
+        sidebar_link_border_color(@to, @current)
+      ]}
+    >
+      <span class="w-[56px] grid place-items-center">
+        <.icon name={@icon} class="text-lg leading-none" />
+      </span>
+      <!--
+      <.icon name={@icon} class="text-lg leading-6 w-[56px] flex justify-center" />
+      <%= if is_binary(@icon) and String.starts_with?(@icon, "hero-") do %>
+        <.icon name={@icon} class="text-lg leading-6 w-[56px] flex justify-center" />
+      <% else %>
+        <.icon name="hero-bug-ant" class="text-lg leading-6 w-[56px] flex justify-center" />
+      <% end %>
+      -->
+      <!--
+      <.remix_icon icon={@icon} class="text-lg leading-6 w-[56px] flex justify-center" />
+      <.icon name="hero-bug-ant" class="text-lg leading-6 w-[56px] flex justify-center" />
+      -->
+      <span class="text-sm font-medium">
+        {@title}
+      </span>
+    </.link>
+    """
+  end
+
+  defp sidebar_link_text_color(to, current) when to == current, do: "text-white"
+  defp sidebar_link_text_color(_to, _current), do: "text-gray-400"
+
+  defp sidebar_link_border_color(to, current) when to == current, do: "border-white"
+  defp sidebar_link_border_color(_to, _current), do: "border-transparent"
 end

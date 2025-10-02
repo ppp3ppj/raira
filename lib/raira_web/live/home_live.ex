@@ -4,14 +4,14 @@ defmodule RairaWeb.HomeLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, self_path: ~p"/")}
+    {:ok, assign(socket, self_path: ~p"/", page_title: "Home")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
-    <LayoutComponents.layout>
-    <p>ppp</p>
+    <LayoutComponents.layout current_page={~p"/"}>
+      <p>Home</p>
     </LayoutComponents.layout>
     """
   end
