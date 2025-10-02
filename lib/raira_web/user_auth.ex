@@ -260,7 +260,7 @@ defmodule RairaWeb.UserAuth do
   # the user was already logged in, redirect to settings
   def signed_in_path(%Plug.Conn{assigns: %{current_scope: %Scope{user: %Accounts.User{}}}}) do
     #~p"/users/settings"
-    ~p"/app"
+    ~p"/"
   end
 
   def signed_in_path(_), do: ~p"/"

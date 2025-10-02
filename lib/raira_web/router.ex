@@ -22,7 +22,7 @@ defmodule RairaWeb.Router do
 
     #get "/", PageController, :home
     #live "/", LandingLive.Welcome
-    get "/", LandingPage.LandingPageController, :home
+    get "/landing", LandingPage.LandingPageController, :home
   end
 
   # Other scopes may use custom stacks.
@@ -52,7 +52,7 @@ defmodule RairaWeb.Router do
   scope "/", RairaWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    live "/app", HomeLive, :page
+    live "/", HomeLive, :page
 
     live_session :require_authenticated_user,
       on_mount: [{RairaWeb.UserAuth, :require_authenticated}] do
