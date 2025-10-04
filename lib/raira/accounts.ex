@@ -314,4 +314,61 @@ defmodule Raira.Accounts do
   def change_user(%Raira.Accounts.User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  @doc """
+  Updates a User from given changeset.
+
+  With success, notifies interested processes about user data change.
+  Otherwise, it will return an error tuple with changeset.
+  """
+  @spec update_user(Raira.Accounts.User.t(), map()) :: {:ok, Raira.Accounts.User.t()} | {:error, Ecto.Changeset.t()}
+  def update_user(%Raira.Accounts.User{} = user, attrs \\ %{}) do
+    changeset = Raira.Accounts.User.changeset(user, attrs)
+    IO.inspect(changeset, label: "BEFORE UPDATE: ")
+
+    with {:ok, user} <- Ecto.Changeset.apply_action(changeset, :update) do
+      broadcast_change(user)
+      {:ok, user}
+    end
+  end
+
+
+  @doc """
+  Notifies interested processes about user data change.
+
+  Broadcasts `{:user_change, user}` message under the `"user:{id}"` topic.
+  """
+  @spec broadcast_change(Raira.Accounts.User.t()) :: :ok
+  def broadcast_change(%Raira.Accounts.User{} = user) do
+    broadcast_user_message(user.id, {:user_change, user})
+    :ok
+  end
+
+  defp broadcast_user_message(user_id, message) do
+    # TODO: IMPL THIS
+    #Phoenix.PubSub.broadcast(Raira.PubSub, "users:#{user_id}", message)
+  end
+
+  @doc """
+  Subscribes to updates in user information.
+
+  ## Messages
+
+    * `{:user_change, user}`
+
+  """
+  @spec subscribe(User.id()) :: :ok | {:error, term()}
+  def subscribe(user_id) do
+    # TODO: IMPL THIS
+    #Phoenix.PubSub.subscribe(Raira.PubSub, "users:#{user_id}")
+  end
+
+  @doc """
+  Unsubscribes from `subscribe/1`.
+  """
+  @spec unsubscribe(User.id()) :: :ok
+  def unsubscribe(user_id) do
+    # TODO: IMPL THIS
+    #Phoenix.PubSub.unsubscribe(Raira.PubSub, "users:#{user_id}")
+  end
 end

@@ -94,4 +94,14 @@ defmodule RairaWeb.UserComponent do
 
     {:noreply, assign(socket, changeset: changeset, user: user)}
   end
+
+  def handle_event("save", %{"user" => params}, socket) do
+    case Raira.Accounts.update_user(socket.assigns.user, params) do
+      {:ok, user} ->
+        {:noreply, assign(socket, changeset: Raira.Accounts.change_user(user), user: user)}
+
+      {:error, changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
+    end
+  end
 end
