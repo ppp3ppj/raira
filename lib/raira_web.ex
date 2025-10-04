@@ -86,6 +86,7 @@ defmodule RairaWeb do
       import Phoenix.HTML
       # Core UI components
       import RairaWeb.CoreComponents
+      import RairaWeb.FormComponents # for form
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS
