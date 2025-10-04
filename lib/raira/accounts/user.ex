@@ -15,6 +15,8 @@ defmodule Raira.Accounts.User do
     field :last_name, :string
     field :username, :string
 
+    field :hex_color, Raira.EctoTypes.HexColor
+
     timestamps(type: :utc_datetime)
   end
 
@@ -151,7 +153,7 @@ defmodule Raira.Accounts.User do
   @doc false
   def changeset(user, attrs \\ %{}) do
     user
-    |> cast(attrs, [:email])
+    |> cast(attrs, [:email, :hex_color])
     #|> cast(attrs, [:name, :email, :avatar_url, :access_type, :groups, :hex_color, :payload])
     #|> validate_required([:hex_color])
   end
