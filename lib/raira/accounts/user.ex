@@ -147,4 +147,12 @@ defmodule Raira.Accounts.User do
     Argon2.no_user_verify()
     false
   end
+
+  @doc false
+  def changeset(user, attrs \\ %{}) do
+    user
+    |> cast(attrs, [:email])
+    #|> cast(attrs, [:name, :email, :avatar_url, :access_type, :groups, :hex_color, :payload])
+    #|> validate_required([:hex_color])
+  end
 end

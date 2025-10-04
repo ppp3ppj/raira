@@ -87,7 +87,7 @@ defmodule Raira.Accounts do
   """
   def register_user(attrs) do
     %User{}
-    #|> User.email_changeset(attrs)
+    # |> User.email_changeset(attrs)
     |> User.registration_changeset(attrs)
     |> Repo.insert()
   end
@@ -305,5 +305,13 @@ defmodule Raira.Accounts do
         {:ok, {user, tokens_to_expire}}
       end
     end)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user changes.
+  """
+  @spec change_user(Raira.Accounts.User.t(), map()) :: Ecto.Changeset.t()
+  def change_user(%Raira.Accounts.User{} = user, attrs \\ %{}) do
+    User.changeset(user, attrs)
   end
 end
