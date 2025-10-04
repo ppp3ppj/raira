@@ -345,8 +345,9 @@ defmodule Raira.Accounts do
   end
 
   defp broadcast_user_message(user_id, message) do
-    # TODO: IMPL THIS
-    #Phoenix.PubSub.broadcast(Raira.PubSub, "users:#{user_id}", message)
+    IO.puts("users:#{user_id}")
+    #IO.puts("message:#{message}")
+    Phoenix.PubSub.broadcast(Raira.PubSub, "users:#{user_id}", message)
   end
 
   @doc """
@@ -359,8 +360,7 @@ defmodule Raira.Accounts do
   """
   @spec subscribe(User.id()) :: :ok | {:error, term()}
   def subscribe(user_id) do
-    # TODO: IMPL THIS
-    #Phoenix.PubSub.subscribe(Raira.PubSub, "users:#{user_id}")
+    Phoenix.PubSub.subscribe(Raira.PubSub, "users:#{user_id}")
   end
 
   @doc """
@@ -368,7 +368,6 @@ defmodule Raira.Accounts do
   """
   @spec unsubscribe(User.id()) :: :ok
   def unsubscribe(user_id) do
-    # TODO: IMPL THIS
-    #Phoenix.PubSub.unsubscribe(Raira.PubSub, "users:#{user_id}")
+    Phoenix.PubSub.unsubscribe(Raira.PubSub, "users:#{user_id}")
   end
 end
