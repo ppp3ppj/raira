@@ -526,7 +526,7 @@ defmodule RairaWeb.CoreComponents do
             phx-click={JS.exec("data-cancel", to: "##{@id}")}
           >
             <span class="text-sm">(esc)</span>
-          <!--
+            <!--
             <.remix_icon icon="close-line" class="text-2xl" />
             -->
           </button>
@@ -569,5 +569,55 @@ defmodule RairaWeb.CoreComponents do
       to: "##{id}-container"
     )
     |> JS.hide(to: "##{id}", transition: {"block", "block", "hidden"})
+  end
+
+  @doc """
+  Renders an icon button.
+
+  ## Examples
+
+      <.icon_button>
+        <.remix_icon icon="refresh-line" />
+      </.icon_button>
+
+  """
+  attr :disabled, :boolean, default: false
+  attr :small, :boolean, default: false
+  attr :class, :string, default: nil
+
+  attr :rest, :global, include: ~w(href patch navigate download name)
+
+  slot :inner_block
+
+  def icon_button(assigns)
+      when is_map_key(assigns.rest, :href) or is_map_key(assigns.rest, :patch) or
+             is_map_key(assigns.rest, :navigate) do
+    ~H"""
+    <.link class={[icon_button_classes(@small, @disabled), @class]} {@rest}>
+      {render_slot(@inner_block)}
+    </.link>
+    """
+  end
+
+  def icon_button(assigns) do
+    ~H"""
+    <button class={[icon_button_classes(@small, @disabled), @class]} disabled={@disabled} {@rest}>
+      {render_slot(@inner_block)}
+    </button>
+    """
+  end
+
+  defp icon_button_classes(small, disabled) do
+    [
+      unless small do
+        "text-xl"
+      end,
+      "p-1 flex items-center justify-center rounded-full leading-none",
+      if disabled do
+        "cursor-default text-gray-300"
+      else
+        "text-gray-500 hover:text-gray-900 hover:bg-gray-50 focus-visible:bg-gray-100 focus-visible:outline-none"
+      end
+    ]
   end
 end

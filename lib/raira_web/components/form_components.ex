@@ -58,6 +58,54 @@ defmodule RairaWeb.FormComponents do
     """
   end
 
+  @doc """
+  Renders a hex color input with label and error messages.
+  """
+  attr :id, :any, default: nil
+  attr :name, :any
+  attr :label, :string, default: nil
+  attr :value, :any
+  attr :errors, :list, default: []
+  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form"
+  attr :help, :string, default: nil
+
+  attr :randomize, JS, default: %JS{}
+  attr :rest, :global
+
+  def hex_color_field(assigns) do
+    assigns = assigns_from_field(assigns)
+
+    ~H"""
+    <.field_wrapper id={@id} name={@name} label={@label} errors={@errors} help={@help}>
+      <div class="flex space-x-4 items-center">
+        <div
+          class="border-[3px] rounded-lg p-1 flex justify-center items-center"
+          style={"border-color: #{@value}"}
+        >
+          <div class="rounded h-5 w-5" style={"background-color: #{@value}"}></div>
+        </div>
+        <div class="relative grow">
+          <input
+            type="text"
+            name={@name}
+            id={@id || @name}
+            value={@value}
+            class={input_classes(@errors)}
+            spellcheck="false"
+            maxlength="7"
+            {@rest}
+          />
+          <div class="absolute right-2 top-1">
+            <.icon_button type="button" phx-click={@randomize}>
+              <.icon name="hero-arrow-path" />
+            </.icon_button>
+          </div>
+        </div>
+      </div>
+    </.field_wrapper>
+    """
+  end
+
   defp outer_prefixed_input_wrapper_classes(errors) do
     [
       "relative flex items-stretch rounded-lg border focus-within:border-blue-600",

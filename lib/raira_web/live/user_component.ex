@@ -1,11 +1,12 @@
 defmodule RairaWeb.UserComponent do
+  alias Raira.EctoTypes.HexColor
   use RairaWeb, :live_component
   import RairaWeb.UserComponents
 
   @impl true
   def update(assigns, socket) do
     socket = assign(socket, assigns)
-    user = socket.assigns.user
+    user = socket.assigns.user |> IO.inspect(label: "PPPPP :")
     # changeset = Users.change_user(user)
     changeset = Raira.Accounts.change_user(user)
 
@@ -51,13 +52,13 @@ defmodule RairaWeb.UserComponent do
           <%= if @user.email do %>
             <.text_field field={f[:email]} label="email" spellcheck="false" disabled="true" />
           <% end %>
-          <!--
+
           <.hex_color_field
             field={f[:hex_color]}
             label="Cursor color"
             randomize={JS.push("randomize_color", target: @myself)}
           />
-          -->
+
           <.button type="submit" disabled={not @changeset.valid?}>
             <.icon name="hero-archive-box-arrow-down" />
             <!--
@@ -69,5 +70,28 @@ defmodule RairaWeb.UserComponent do
       </.form>
     </div>
     """
+  end
+
+  @impl true
+  def handle_event("randomize_color", %{}, socket) do
+    hex_color = HexColor.random(expect: [socket.assigns.user.hex_color])
+
+    handle_event("validate", %{"user" => %{"hex_color" => hex_color}}, socket)
+  end
+
+  def handle_event("validate", %{"user" => params}, socket) do
+    changeset =
+      socket.assigns.user
+      |> Raira.Accounts.change_user(params)
+      |> Map.put(:action, :validate)
+
+    user =
+      if changeset.valid? do
+        Ecto.Changeset.apply_action!(changeset, :update)
+      else
+        socket.assigns.user
+      end
+
+    {:noreply, assign(socket, changeset: changeset, user: user)}
   end
 end
