@@ -17,13 +17,27 @@ defmodule Raira.Accounts.User do
     field :username, :string
 
     field :hex_color, Raira.EctoTypes.HexColor
+    field :role, :string, default: "user"
 
     timestamps(type: :utc_datetime)
   end
 
+  # Public registration - No role casting
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email, :first_name, :last_name, :username, :password])
+    |> put_change(:role, "user") # Force role to "user"
+    |> unique_constraint(:username)
+    |> validate_username()
+    |> validate_password(opts)
+  end
+
+  # TODO: Write doc and use only admin registration
+  # Admin-only changeset - Can set roles
+  def admin_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email, :first_name, :last_name, :username, :password, :role])
+    |> validate_inclusion(:role, ["admin", "user"])
     |> unique_constraint(:username)
     |> validate_username()
     |> validate_password(opts)

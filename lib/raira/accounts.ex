@@ -93,6 +93,12 @@ defmodule Raira.Accounts do
     |> Repo.insert()
   end
 
+  def register_admin(attrs) do
+    %User{}
+    |> User.admin_changeset(attrs)
+    |> Repo.insert()
+  end
+
   ## Settings
 
   @doc """
