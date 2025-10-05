@@ -10,7 +10,6 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Raira.Repo
 alias Raira.Accounts
 
 admin_flname = "admin"
@@ -25,11 +24,12 @@ user_name = "user"
 
 case Accounts.get_user_by_email(admin_email) do
   nil ->
-    {:ok, _admin} = Accounts.register_user(%{
+    {:ok, _admin} = Accounts.register_admin(%{
       first_name: admin_flname,
       last_name: admin_flname,
       username: admin_name,
       email: admin_email,
+      role: "admin",
       password: password
     })
 
