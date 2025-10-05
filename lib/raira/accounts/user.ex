@@ -2,6 +2,7 @@ defmodule Raira.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @type hex_color :: String.t()
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "users" do
@@ -153,7 +154,9 @@ defmodule Raira.Accounts.User do
   @doc false
   def changeset(user, attrs \\ %{}) do
     user
-    |> cast(attrs, [:email, :hex_color])
+    #|> cast(attrs, [:email, :hex_color])
+    |> cast(attrs, [:hex_color, :username, :first_name, :last_name, :email])
+    |> validate_required([:hex_color])
     #|> cast(attrs, [:name, :email, :avatar_url, :access_type, :groups, :hex_color, :payload])
     #|> validate_required([:hex_color])
   end

@@ -4,6 +4,7 @@ defmodule Raira.Accounts do
   """
 
   import Ecto.Query, warn: false
+  alias Ecto.Repo
   alias Raira.Repo
 
   alias Raira.Accounts.{User, UserToken, UserNotifier}
@@ -321,15 +322,39 @@ defmodule Raira.Accounts do
   With success, notifies interested processes about user data change.
   Otherwise, it will return an error tuple with changeset.
   """
-  @spec update_user(Raira.Accounts.User.t(), map()) :: {:ok, Raira.Accounts.User.t()} | {:error, Ecto.Changeset.t()}
+  @spec update_user(Raira.Accounts.User.t(), map()) ::
+          {:ok, Raira.Accounts.User.t()} | {:error, Ecto.Changeset.t()}
   def update_user(%Raira.Accounts.User{} = user, attrs \\ %{}) do
-    changeset = Raira.Accounts.User.changeset(user, attrs)
-    IO.inspect(changeset, label: "BEFORE UPDATE: ")
+    IO.inspect(user.hex_color, label: "Current color")
+    IO.inspect(attrs, label: "Attrs")
+    #changeset = Raira.Accounts.User.changeset(user, attrs)
 
-    with {:ok, user} <- Ecto.Changeset.apply_action(changeset, :update) do
-      broadcast_change(user)
-      {:ok, user}
+    # FIXME: It's not good performance to do this pattern when update like this
+    fresh_user = Repo.get!(User, user.id)
+    changeset = User.changeset(fresh_user, attrs)
+    IO.inspect(changeset, label: "Changeset")
+
+    # update_user_hex_color(user, user.hex_color)
+
+    # with{:ok, user} <- Repo.update!(changeset) do
+    case Repo.update(changeset) do
+      {:ok, user} ->
+        broadcast_change(user)
+        {:ok, user}
+
+      {:error, changeset} ->
+        {:error, changeset}
     end
+
+    # Old code collect it without db
+    # TODO: Remove it if not use
+    # with {:ok, user} <- Ecto.Changeset.apply_action(changeset, :update) do
+    #  user
+    #  |> Repo.update(changeset)
+
+    #  broadcast_change(user)
+    #  {:ok, user}
+    # end
   end
 
 
@@ -346,7 +371,6 @@ defmodule Raira.Accounts do
 
   defp broadcast_user_message(user_id, message) do
     IO.puts("users:#{user_id}")
-    #IO.puts("message:#{message}")
     Phoenix.PubSub.broadcast(Raira.PubSub, "users:#{user_id}", message)
   end
 
