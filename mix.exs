@@ -1,11 +1,16 @@
 defmodule Raira.MixProject do
   use Mix.Project
 
+  @elixir_requirement "~> 1.18"
+  @version "0.0.1-dev"
+  @description "Test application"
+
   def project do
     [
       app: :raira,
-      version: "0.1.0",
-      elixir: "~> 1.15",
+      version: @version,
+      elixir: @elixir_requirement,
+      description: @description,
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
