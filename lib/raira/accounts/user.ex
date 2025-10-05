@@ -17,6 +17,7 @@ defmodule Raira.Accounts.User do
     field :username, :string
 
     field :hex_color, Raira.EctoTypes.HexColor
+    field :role, :string, default: "user"
 
     timestamps(type: :utc_datetime)
   end
