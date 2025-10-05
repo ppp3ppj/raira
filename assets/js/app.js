@@ -34,7 +34,8 @@ const liveSocket = new LiveSocket("/live", Socket, {
   params: {
         _csrf_token: csrfToken,
         // Pass the most recent user data to the LiveView in `connect_params`
-        user_data: loadUserData()
+        // If loading when collect user data on cookie now it not use anymore
+        //user_data: loadUserData()
   },
   hooks: {...colocatedHooks, ...custom_hooks},
 })
