@@ -19,6 +19,12 @@ defmodule Raira.EctoTypes.HexColor do
     end
   end
 
+
+ #@impl true
+ #def cast(nil), do: {:ok, nil}
+ #def cast(value) when is_binary(value) and valid?(value), do: {:ok, value}
+ #def cast(_), do: :error
+
   @doc """
   Returns a random hex color for a user.
 
