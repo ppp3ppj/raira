@@ -66,7 +66,8 @@ defmodule RairaWeb.LayoutComponents do
               </.link>
 
               <span class="text-gray-300 text-xs font-normal font-sans mx-2.5 pt-3 cursor-default">
-                v{"0.0.0-dev"}
+
+                v{Raira.Config.app_version()}
               </span>
             </div>
 
