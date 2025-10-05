@@ -10,12 +10,13 @@ defmodule RairaWeb.LayoutComponents do
   attr :current_page, :string, required: true
   attr :current_user, Raira.Accounts.User, required: true
   slot :inner_block, required: true
+  attr :saved_hubs, :list, required: true
 
   def layout(assigns) do
     ~H"""
     <div class="flex grow h-full">
       <div class="absolute md:static h-full z-[600]">
-        <.sidebar current_page={@current_page} current_user={@current_user}/>
+        <.sidebar current_page={@current_page} current_user={@current_user} saved_hubs={@saved_hubs}/>
       </div>
 
       <div class="grow overflow-y-auto">
@@ -31,13 +32,11 @@ defmodule RairaWeb.LayoutComponents do
             >
             </button>
           </div>
-
         </div>
 
         {render_slot(@inner_block)}
       </div>
     </div>
-
 
     <.current_user_modal current_user={@current_user} />
     <p>Current page: {@current_page}</p>
@@ -66,7 +65,6 @@ defmodule RairaWeb.LayoutComponents do
               </.link>
 
               <span class="text-gray-300 text-xs font-normal font-sans mx-2.5 pt-3 cursor-default">
-
                 v{Raira.Config.app_version()}
               </span>
             </div>
@@ -79,6 +77,8 @@ defmodule RairaWeb.LayoutComponents do
               current={@current_page}
             />
           </div>
+          <.hub_section hubs={@saved_hubs} current_page={@current_page} />
+          <.hub_section hubs={@saved_hubs} current_page={@current_page} />
         </div>
 
         <div class="flex flex-col">
@@ -98,7 +98,7 @@ defmodule RairaWeb.LayoutComponents do
             class="mt-6 flex items-center group border-l-4 border-transparent"
             aria_label="user profile"
           >
-          <div class="w-[56px] flex justify-center">
+            <div class="w-[56px] flex justify-center">
               <.user_avatar
                 user={@current_user}
                 class="w-8 h-8 group-hover:ring-white group-hover:ring-2"
@@ -145,6 +145,90 @@ defmodule RairaWeb.LayoutComponents do
       </span>
     </.link>
     """
+  end
+
+  defp sidebar_hub_link_with_tooltip(assigns) do
+    ~H"""
+    <.link {hub_connection_link_opts(@hub, @to, @current)}>
+      <div class="text-lg leading-6 w-[56px] flex justify-center">
+        <span class="relative">
+          {@hub.emoji}
+
+          <div class={[
+            "absolute w-[10px] h-[10px] border-gray-900 border-2 rounded-full right-0 bottom-0",
+            if(@hub.connected?, do: "bg-green-400", else: "bg-red-400")
+          ]} />
+        </span>
+      </div>
+      <span class="text-sm font-medium">
+        {@hub.name}
+      </span>
+    </.link>
+    """
+  end
+
+  defp sidebar_hub_link(assigns) do
+    ~H"""
+    <.link
+      id={"hub-#{@hub.id}"}
+      navigate={@to}
+      class={[
+        "h-7 flex items-center hover:text-white border-l-4 hover:border-white",
+        sidebar_link_text_color(@to, @current),
+        sidebar_link_border_color(@to, @current)
+      ]}
+    >
+      <div class="text-lg leading-6 w-[56px] flex justify-center">
+        <span class="relative">
+          {@hub.emoji}
+        </span>
+      </div>
+      <span class="text-sm font-medium">
+        {@hub.name}
+      </span>
+    </.link>
+    """
+  end
+
+  defp hub_section(assigns) do
+    ~H"""
+    <div id="hubs" class="flex flex-col mt-12">
+      <div class="space-y-3">
+        <div class="grid grid-cols-1 md:grid-cols-2 relative leading-6 mb-2">
+          <small class="ml-5 font-medium text-gray-300 cursor-default">WORKSPACES</small>
+        </div>
+
+        <%= for hub <- @hubs do %>
+          <%= if Provider.connection_spec(hub.provider) do %>
+            <.sidebar_hub_link_with_tooltip hub={hub} to={~p"/hub/#{hub.id}"} current={@current_page} />
+          <% else %>
+            <.sidebar_hub_link hub={hub} to={~p"/hub/#{hub.id}"} current={@current_page} />
+          <% end %>
+        <% end %>
+
+        <.sidebar_link title="Add Organization" icon="hero-add-line" to={~p"/hub"} current={@current_page} />
+      </div>
+    </div>
+    """
+  end
+
+  defp hub_connection_link_opts(%{provider: hub}, to, current) do
+    text_color = sidebar_link_text_color(to, current)
+    border_color = sidebar_link_border_color(to, current)
+
+    class =
+      "h-7 flex items-center hover:text-white #{text_color} border-l-4 #{border_color} hover:border-white"
+
+    if message = Provider.connection_status(hub) do
+      [
+        id: "hub-#{hub.id}",
+        navigate: to,
+        "data-tooltip": message,
+        class: "tooltip right " <> class
+      ]
+    else
+      [id: "hub-#{hub.id}", navigate: to, class: class]
+    end
   end
 
   @doc """

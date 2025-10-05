@@ -10,7 +10,7 @@ defmodule RairaWeb.SettingsLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <LayoutComponents.layout current_page={~p"/settings"} current_user={@current_scope.user}>
+    <LayoutComponents.layout current_page={~p"/settings"} current_user={@current_scope.user} saved_hubs={[]}>
       <div class="p-4 md:px-12 md:py-6 max-w-screen-lg mx-auto">
         <div class="flex flex-row space-y-0 items-center pb-4 justify-between">
           <LayoutComponents.title text="Settings" />
