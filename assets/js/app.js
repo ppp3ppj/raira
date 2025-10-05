@@ -25,11 +25,19 @@ import {LiveSocket} from "phoenix_live_view"
 import {hooks as colocatedHooks} from "phoenix-colocated/raira"
 import topbar from "../vendor/topbar"
 
+import custom_hooks from "./hooks";
+import { loadUserData } from "./lib/user";
+
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
-  params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks},
+  params: {
+        _csrf_token: csrfToken,
+        // Pass the most recent user data to the LiveView in `connect_params`
+        // If loading when collect user data on cookie now it not use anymore
+        //user_data: loadUserData()
+  },
+  hooks: {...colocatedHooks, ...custom_hooks},
 })
 
 // Show progress bar on live navigation and form submits

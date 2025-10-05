@@ -52,13 +52,15 @@ defmodule RairaWeb.Router do
   scope "/", RairaWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    live "/", HomeLive, :page
-    live "/settings", SettingsLive, :page
 
     live_session :require_authenticated_user,
       on_mount: [{RairaWeb.UserAuth, :require_authenticated}] do
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
+
+
+      live "/", HomeLive, :page
+      live "/settings", SettingsLive, :page
     end
 
     post "/users/update-password", UserSessionController, :update_password

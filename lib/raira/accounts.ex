@@ -4,6 +4,7 @@ defmodule Raira.Accounts do
   """
 
   import Ecto.Query, warn: false
+  alias Ecto.Repo
   alias Raira.Repo
 
   alias Raira.Accounts.{User, UserToken, UserNotifier}
@@ -87,7 +88,7 @@ defmodule Raira.Accounts do
   """
   def register_user(attrs) do
     %User{}
-    #|> User.email_changeset(attrs)
+    # |> User.email_changeset(attrs)
     |> User.registration_changeset(attrs)
     |> Repo.insert()
   end
@@ -305,5 +306,92 @@ defmodule Raira.Accounts do
         {:ok, {user, tokens_to_expire}}
       end
     end)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user changes.
+  """
+  @spec change_user(Raira.Accounts.User.t(), map()) :: Ecto.Changeset.t()
+  def change_user(%Raira.Accounts.User{} = user, attrs \\ %{}) do
+    User.changeset(user, attrs)
+  end
+
+  @doc """
+  Updates a User from given changeset.
+
+  With success, notifies interested processes about user data change.
+  Otherwise, it will return an error tuple with changeset.
+  """
+  @spec update_user(Raira.Accounts.User.t(), map()) ::
+          {:ok, Raira.Accounts.User.t()} | {:error, Ecto.Changeset.t()}
+  def update_user(%Raira.Accounts.User{} = user, attrs \\ %{}) do
+    IO.inspect(user.hex_color, label: "Current color")
+    IO.inspect(attrs, label: "Attrs")
+    #changeset = Raira.Accounts.User.changeset(user, attrs)
+
+    # FIXME: It's not good performance to do this pattern when update like this
+    fresh_user = Repo.get!(User, user.id)
+    changeset = User.changeset(fresh_user, attrs)
+    IO.inspect(changeset, label: "Changeset")
+
+    # update_user_hex_color(user, user.hex_color)
+
+    # with{:ok, user} <- Repo.update!(changeset) do
+    case Repo.update(changeset) do
+      {:ok, user} ->
+        broadcast_change(user)
+        {:ok, user}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+
+    # Old code collect it without db
+    # TODO: Remove it if not use
+    # with {:ok, user} <- Ecto.Changeset.apply_action(changeset, :update) do
+    #  user
+    #  |> Repo.update(changeset)
+
+    #  broadcast_change(user)
+    #  {:ok, user}
+    # end
+  end
+
+
+  @doc """
+  Notifies interested processes about user data change.
+
+  Broadcasts `{:user_change, user}` message under the `"user:{id}"` topic.
+  """
+  @spec broadcast_change(Raira.Accounts.User.t()) :: :ok
+  def broadcast_change(%Raira.Accounts.User{} = user) do
+    broadcast_user_message(user.id, {:user_change, user})
+    :ok
+  end
+
+  defp broadcast_user_message(user_id, message) do
+    IO.puts("users:#{user_id}")
+    Phoenix.PubSub.broadcast(Raira.PubSub, "users:#{user_id}", message)
+  end
+
+  @doc """
+  Subscribes to updates in user information.
+
+  ## Messages
+
+    * `{:user_change, user}`
+
+  """
+  @spec subscribe(User.id()) :: :ok | {:error, term()}
+  def subscribe(user_id) do
+    Phoenix.PubSub.subscribe(Raira.PubSub, "users:#{user_id}")
+  end
+
+  @doc """
+  Unsubscribes from `subscribe/1`.
+  """
+  @spec unsubscribe(User.id()) :: :ok
+  def unsubscribe(user_id) do
+    Phoenix.PubSub.unsubscribe(Raira.PubSub, "users:#{user_id}")
   end
 end
