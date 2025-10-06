@@ -15,7 +15,7 @@ defmodule RairaWeb.LayoutComponents do
     ~H"""
     <div class="flex grow h-full">
       <div class="absolute md:static h-full z-[600]">
-        <.sidebar current_page={@current_page} current_user={@current_user}/>
+        <.sidebar current_page={@current_page} current_user={@current_user} />
       </div>
 
       <div class="grow overflow-y-auto">
@@ -31,17 +31,164 @@ defmodule RairaWeb.LayoutComponents do
             >
             </button>
           </div>
-
         </div>
 
         {render_slot(@inner_block)}
       </div>
     </div>
 
-
     <.current_user_modal current_user={@current_user} />
     <p>Current page: {@current_page}</p>
     <p>Current username: {@current_user.username}</p>
+    """
+  end
+
+  @doc """
+  The layout used in the non-sessios pages.
+  """
+  attr :current_page, :string, required: true
+  attr :current_user, Raira.Accounts.User, required: true
+  slot :inner_block, required: true
+
+  def drawer_layout(assigns) do
+    ~H"""
+    <div class="flex grow h-full" data-el-session data-js-side-panel-content="clients-list">
+      <.drawer_sidebar current_page={@current_page} current_user={@current_user} />
+      <.drawer_side_panel />
+
+      <div class="grow overflow-y-auto">
+        <div class="md:hidden sticky flex items-center justify-between h-14 px-4 top-0 left-0 z-[500] bg-white border-b border-gray-200">
+          <div class="pt-1 text-xl text-gray-400 hover:text-gray-600 focus:text-gray-600">
+            <button
+              data-el-toggle-sidebar
+              aria-label="show sidebar"
+              phx-click={
+                JS.remove_class("hidden", to: "[data-el-sidebar]")
+                |> JS.toggle(to: "[data-el-toggle-sidebar]")
+              }
+            >
+            </button>
+          </div>
+        </div>
+
+        {render_slot(@inner_block)}
+      </div>
+    </div>
+
+    <.current_user_modal current_user={@current_user} />
+    """
+  end
+
+  defp drawer_sidebar(assigns) do
+    ~H"""
+    <nav
+      class="w-16 flex flex-col items-center px-3 py-1 space-y-2 sm:space-y-3 sm:py-5 bg-gray-900"
+      aria-label="sidebar"
+      data-el-sidebar
+    >
+      <span>
+        <.link navigate={~p"/"} aria-label="go to homepage">
+          <img src={~p"/images/logo.png"} height="40" width="40" alt="" />
+        </.link>
+      </span>
+
+      <%!-- Local functionality --%>
+
+      <.button_item
+        icon="hero-home"
+        label="Outline (so)"
+        button_attrs={["data-el-outline-toggle": true]}
+      />
+
+      <.button_item
+        icon="hero-user"
+        label="Connected users (su)"
+        button_attrs={["data-el-clients-list-toggle": true]}
+      />
+      <!--
+
+      <div class="relative">
+        <.button_item
+          icon="cpu-line"
+          label="Runtime settings (sr)"
+          button_attrs={["data-el-runtime-info-toggle": true]}
+        />
+        <div
+          :if={@runtime_connected_nodes != []}
+          data-el-runtime-indicator
+          class={[
+            "absolute w-[12px] h-[12px] border-gray-900 border-2 rounded-full right-1.5 top-1.5 pointer-events-none",
+            "bg-blue-500"
+          ]}
+        />
+      </div>
+      -->
+
+      <%!-- Hub functionality --%>
+
+    <!--
+      <.button_item
+        icon="lock-password-line"
+        label="Secrets (ss)"
+        button_attrs={["data-el-secrets-list-toggle": true]}
+      />
+
+      <.button_item
+        icon="folder-open-fill"
+        label="Files (sf)"
+        button_attrs={["data-el-files-list-toggle": true]}
+      />
+
+      <.button_item
+        icon="rocket-line"
+        label="App settings (sa)"
+        button_attrs={["data-el-app-info-toggle": true]}
+      />
+
+      <div class="grow"></div>
+
+      <.link_item
+        icon="delete-bin-6-fill"
+        label="Bin (sb)"
+        path={~p"/sessions/#{@session.id}/bin"}
+        active={@live_action == :bin}
+        link_attrs={["data-btn-show-bin": true]}
+      />
+
+      <.link_item
+        icon="keyboard-box-fill"
+        label="Keyboard shortcuts (?)"
+        path={~p"/sessions/#{@session.id}/shortcuts"}
+        active={@live_action == :shortcuts}
+        link_attrs={["data-btn-show-shortcuts": true]}
+      />
+      -->
+
+      <span class="tooltip right distant" data-tooltip="User profile">
+        <button
+          class="text-gray-400 rounded-xl h-8 w-8 flex items-center justify-center mt-2 group"
+          aria_label="user profile"
+          phx-click={show_current_user_modal()}
+        >
+          <.user_avatar
+            user={@current_user}
+            class="w-8 h-8 group-hover:ring-white group-hover:ring-2"
+            text_class="text-xs"
+          />
+        </button>
+      </span>
+    </nav>
+    """
+  end
+
+  defp drawer_side_panel(assigns) do
+    ~H"""
+    <div
+      class="flex flex-col h-full w-full max-w-xs absolute z-30 top-0 left-[64px] overflow-y-auto shadow-xl md:static md:shadow-none bg-gray-50 border-r border-gray-100 px-6 pt-16 md:py-8"
+      data-el-side-panel
+    >
+      <.clients_list />
+    </div>
     """
   end
 
@@ -66,7 +213,6 @@ defmodule RairaWeb.LayoutComponents do
               </.link>
 
               <span class="text-gray-300 text-xs font-normal font-sans mx-2.5 pt-3 cursor-default">
-
                 v{Raira.Config.app_version()}
               </span>
             </div>
@@ -98,7 +244,7 @@ defmodule RairaWeb.LayoutComponents do
             class="mt-6 flex items-center group border-l-4 border-transparent"
             aria_label="user profile"
           >
-          <div class="w-[56px] flex justify-center">
+            <div class="w-[56px] flex justify-center">
               <.user_avatar
                 user={@current_user}
                 class="w-8 h-8 group-hover:ring-white group-hover:ring-2"
@@ -191,4 +337,41 @@ defmodule RairaWeb.LayoutComponents do
 
   defp sidebar_link_border_color(to, current) when to == current, do: "border-white"
   defp sidebar_link_border_color(_to, _current), do: "border-transparent"
+
+  defp button_item(assigns) do
+    ~H"""
+    <span class="tooltip right distant" data-tooltip={@label}>
+      <button
+        class="text-2xl text-gray-400 hover:text-gray-50 focus:text-gray-50 rounded-xl h-10 w-10 flex items-center justify-center"
+        aria-label={@label}
+        {@button_attrs}
+      >
+        <.icon name={@icon} />
+      </button>
+    </span>
+    """
+  end
+
+  defp clients_list(assigns) do
+    ~H"""
+    <div class="flex flex-col grow" data-el-clients-list>
+      <div class="flex items-center justify-between space-x-4 -mt-1">
+        <h3 class="uppercase text-sm font-semibold text-gray-500">
+          Users
+        </h3>
+        <span class="flex items-center px-2 py-1 space-x-2 text-sm bg-gray-200 rounded-lg">
+          <span class="inline-flex w-3 h-3 bg-green-600 rounded-full"></span>
+          <!--
+          <span>{length(@data_view.clients)} connected</span>
+          -->
+        </span>
+      </div>
+      <div class="flex flex-col mt-5 space-y-4">
+        <!--
+
+        -->
+      </div>
+    </div>
+    """
+  end
 end
