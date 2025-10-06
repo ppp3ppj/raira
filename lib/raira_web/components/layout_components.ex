@@ -52,7 +52,7 @@ defmodule RairaWeb.LayoutComponents do
 
   def drawer_layout(assigns) do
     ~H"""
-    <div class="flex grow h-full" data-el-session data-js-side-panel-content="clients-list">
+    <div class="flex grow h-full" data-el-session phx-hook="Session" id="session-root">
       <.drawer_sidebar current_page={@current_page} current_user={@current_user} />
       <.drawer_side_panel />
 
@@ -364,12 +364,12 @@ defmodule RairaWeb.LayoutComponents do
           <!--
           <span>{length(@data_view.clients)} connected</span>
           -->
+
+          <!-- Example: <span>3 connected</span> -->
         </span>
       </div>
       <div class="flex flex-col mt-5 space-y-4">
-        <!--
-
-        -->
+      <!-- client list items -->
       </div>
     </div>
     """

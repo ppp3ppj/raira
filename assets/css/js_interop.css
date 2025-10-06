@@ -6,12 +6,3 @@ we hide/show certain elements. This way we don't have to engage the
 server in solely client-side operations.
 */
 
-/* Hide clients list unless the session says it's active */
-[data-el-session]:not([data-js-side-panel-content="clients-list"]) [data-el-clients-list] {
-  display: none;
-}
-
-/* Optional: highlight the active button */
-[data-el-session][data-js-side-panel-content="clients-list"] [data-el-clients-list-toggle] {
-  @apply text-white bg-gray-700;
-}
