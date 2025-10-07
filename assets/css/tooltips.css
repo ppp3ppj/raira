@@ -34,8 +34,8 @@ Example usage:
   text-align: center;
   display: block;
   z-index: 100;
-  background-color: #1c273c;
-  color: #f0f5f9;
+  background-color: var(--tooltip-bg);
+  color: var(--tooltip-fg);
   font-size: 12px;
   font-weight: 500;
   border-radius: 4px;
@@ -44,6 +44,7 @@ Example usage:
   transition-property: visibility;
   transition-duration: 0s;
   transition-delay: 0s;
+  border-radius: var(--tooltip-radius);
 }
 
 /* Tooltip arrow */
@@ -55,7 +56,7 @@ Example usage:
   /* For the arrow we use the triangle trick: https://css-tricks.com/snippets/css/css-triangle/ */
   border-width: var(--arrow-size);
   border-style: solid;
-  border-color: #1c273c;
+  border-color: transparent; /* start transparent on all sides */
   visibility: hidden;
   transition-property: visibility;
   transition-duration: 0s;
