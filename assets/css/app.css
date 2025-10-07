@@ -197,3 +197,14 @@
 [data-phx-session], [data-phx-teleported-src] { display: contents }
 
 /* This file is for your main application CSS */
+
+@import "./js_interop.css";
+
+:root,
+[data-theme] {
+  --tooltip-bg: var(--color-neutral);            /* bubble background */
+  --tooltip-fg: var(--color-neutral-content);    /* bubble text */
+  --tooltip-radius: var(--radius-box, 0.5rem);   /* bubble radius */
+}
+
+@import "./tooltips.css";

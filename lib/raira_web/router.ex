@@ -61,6 +61,7 @@ defmodule RairaWeb.Router do
 
       live "/", HomeLive, :page
       live "/settings", SettingsLive, :page
+      live "/project", ProjectTestLive, :page
     end
 
     post "/users/update-password", UserSessionController, :update_password
