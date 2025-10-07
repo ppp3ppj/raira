@@ -6,3 +6,50 @@ we hide/show certain elements. This way we don't have to engage the
 server in solely client-side operations.
 */
 
+
+/* Show/hide individual panes based on active content */
+[data-el-session] {
+  /* (already present rules)... */
+
+  /* Side panel */
+  &:not([data-js-side-panel-content]) [data-el-side-panel] {
+    @apply hidden;
+  }
+
+  /* add this line for others-list, mirroring the existing clients-list one */
+  &:not([data-js-side-panel-content="others-list"]) [data-el-others-list] {
+    @apply hidden;
+  }
+
+  /* hide the Messages pane unless it's selected */
+  &:not([data-js-side-panel-content="messages-list"]) [data-el-messages-list] {
+    @apply hidden;
+  }
+
+  /* (keep your existing lines) */
+  &:not([data-js-side-panel-content="outline"]) [data-el-outline],
+  &:not([data-js-side-panel-content="clients-list"]) [data-el-clients-list],
+  &:not([data-js-side-panel-content="secrets-list"]) [data-el-secrets-list],
+  &:not([data-js-side-panel-content="files-list"]) [data-el-files-list],
+  &:not([data-js-side-panel-content="runtime-info"]) [data-el-runtime-info],
+  &:not([data-js-side-panel-content="app-info"]) [data-el-app-info] {
+    @apply hidden;
+  }
+
+
+    /* highlight the Messages button when active */
+    &[data-js-side-panel-content="messages-list"] [data-el-messages-list-toggle] {
+      @apply text-gray-50 bg-gray-700;
+    }
+
+  /* active button styling (add the others-list line) */
+  &[data-js-side-panel-content="others-list"] [data-el-others-list-toggle],
+  &[data-js-side-panel-content="outline"] [data-el-outline-toggle],
+  &[data-js-side-panel-content="clients-list"] [data-el-clients-list-toggle],
+  &[data-js-side-panel-content="secrets-list"] [data-el-secrets-list-toggle],
+  &[data-js-side-panel-content="files-list"] [data-el-files-list-toggle],
+  &[data-js-side-panel-content="runtime-info"] [data-el-runtime-info-toggle],
+  &[data-js-side-panel-content="app-info"] [data-el-app-info-toggle] {
+    @apply text-gray-50 bg-gray-700;
+  }
+}

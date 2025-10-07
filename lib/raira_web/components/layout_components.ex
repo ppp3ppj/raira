@@ -101,9 +101,21 @@ defmodule RairaWeb.LayoutComponents do
       />
 
       <.button_item
+        icon="hero-home"
+        label="Clients (so)"
+        button_attrs={["data-el-clients-list-toggle": true]}
+      />
+
+      <.button_item
         icon="hero-user"
         label="Connected users (su)"
-        button_attrs={["data-el-clients-list-toggle": true]}
+        button_attrs={["data-el-others-list-toggle": true]}
+      />
+
+      <.button_item
+        icon="hero-chat-bubble-oval-left-ellipsis"
+        label="Clients (so)"
+        button_attrs={["data-el-messages-list-toggle": true]}
       />
       <!--
 
@@ -163,7 +175,13 @@ defmodule RairaWeb.LayoutComponents do
         link_attrs={["data-btn-show-shortcuts": true]}
       />
       -->
+      <div class="grow"></div>
 
+      <.button_item
+        icon="hero-camera"
+        label="Outline (so)"
+        button_attrs={["data-el-outline-toggle": true]}
+      />
       <span class="tooltip right distant" data-tooltip="User profile">
         <button
           class="text-gray-400 rounded-xl h-8 w-8 flex items-center justify-center mt-2 group"
@@ -188,6 +206,8 @@ defmodule RairaWeb.LayoutComponents do
       data-el-side-panel
     >
       <.clients_list />
+      <.others_list />
+      <.messages_list />
     </div>
     """
   end
@@ -358,6 +378,52 @@ defmodule RairaWeb.LayoutComponents do
       <div class="flex items-center justify-between space-x-4 -mt-1">
         <h3 class="uppercase text-sm font-semibold text-gray-500">
           Users
+        </h3>
+        <span class="flex items-center px-2 py-1 space-x-2 text-sm bg-gray-200 rounded-lg">
+          <span class="inline-flex w-3 h-3 bg-green-600 rounded-full"></span>
+          <!--
+          <span>{length(@data_view.clients)} connected</span>
+          -->
+
+          <!-- Example: <span>3 connected</span> -->
+        </span>
+      </div>
+      <div class="flex flex-col mt-5 space-y-4">
+      <!-- client list items -->
+      </div>
+    </div>
+    """
+  end
+
+  defp others_list(assigns) do
+    ~H"""
+    <div class="flex flex-col grow" data-el-others-list>
+      <div class="flex items-center justify-between space-x-4 -mt-1">
+        <h3 class="uppercase text-sm font-semibold text-gray-500">
+          Others
+        </h3>
+        <span class="flex items-center px-2 py-1 space-x-2 text-sm bg-gray-200 rounded-lg">
+          <span class="inline-flex w-3 h-3 bg-green-600 rounded-full"></span>
+          <!--
+          <span>{length(@data_view.clients)} connected</span>
+          -->
+
+          <!-- Example: <span>3 connected</span> -->
+        </span>
+      </div>
+      <div class="flex flex-col mt-5 space-y-4">
+      <!-- client list items -->
+      </div>
+    </div>
+    """
+  end
+
+  defp messages_list(assigns) do
+    ~H"""
+    <div class="flex flex-col grow" data-el-messages-list>
+      <div class="flex items-center justify-between space-x-4 -mt-1">
+        <h3 class="uppercase text-sm font-semibold text-gray-500">
+          Messages
         </h3>
         <span class="flex items-center px-2 py-1 space-x-2 text-sm bg-gray-200 rounded-lg">
           <span class="inline-flex w-3 h-3 bg-green-600 rounded-full"></span>
