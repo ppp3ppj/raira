@@ -400,4 +400,15 @@ defmodule Raira.Accounts do
   def unsubscribe(user_id) do
     Phoenix.PubSub.unsubscribe(Raira.PubSub, "users:#{user_id}")
   end
+
+  # --- LIST USER
+  def list_users(), do: list_users(%{})
+
+  def list_users(scope) when is_map(scope) do
+    User
+    |> order_by([u], asc: u.inserted_at)
+    |> Repo.all()
+  end
+
+  def list_user(_other), do: list_users(%{})
 end

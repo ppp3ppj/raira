@@ -249,7 +249,7 @@ defmodule RairaWeb.LayoutComponents do
             title="Admin"
             max_items={4}
             features={[
-              %{id: 1, name: "Dashboard", emoji: "🏠"},
+              %{id: 1, name: "Users", emoji: "👥"},
               %{id: 2, name: "Orders", emoji: "🧾"},
               %{id: 3, name: "Customers", emoji: "👥"},
               %{id: 4, name: "Reports", emoji: "📊"},
