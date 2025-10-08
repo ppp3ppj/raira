@@ -245,6 +245,20 @@ defmodule RairaWeb.LayoutComponents do
               current={@current_page}
             />
           </div>
+          <.feature_section
+            title="Admin"
+            max_items={4}
+            features={[
+              %{id: 1, name: "Dashboard", emoji: "🏠"},
+              %{id: 2, name: "Orders", emoji: "🧾"},
+              %{id: 3, name: "Customers", emoji: "👥"},
+              %{id: 4, name: "Reports", emoji: "📊"},
+              %{id: 5, name: "Dashboard", emoji: "🏠"},
+              %{id: 6, name: "Dashboard", emoji: "🏠"}
+            ]}
+            see_more_uri={~p"/features"}
+            current={@current_page}
+          />
         </div>
 
         <div class="flex flex-col">
@@ -389,7 +403,7 @@ defmodule RairaWeb.LayoutComponents do
         </span>
       </div>
       <div class="flex flex-col mt-5 space-y-4">
-      <!-- client list items -->
+        <!-- client list items -->
       </div>
     </div>
     """
@@ -412,7 +426,7 @@ defmodule RairaWeb.LayoutComponents do
         </span>
       </div>
       <div class="flex flex-col mt-5 space-y-4">
-      <!-- client list items -->
+        <!-- client list items -->
       </div>
     </div>
     """
@@ -435,9 +449,100 @@ defmodule RairaWeb.LayoutComponents do
         </span>
       </div>
       <div class="flex flex-col mt-5 space-y-4">
-      <!-- client list items -->
+        <!-- client list items -->
       </div>
     </div>
+    """
+  end
+
+  @doc """
+  Renders a **feature section** in the sidebar, showing a list of feature links
+  with an optional “See more” link if the number of features exceeds `max_items`.
+
+  ## Examples
+
+  ```heex
+  <.feature_section
+  title="Hubs"
+  current="/hub/analytics"
+  features={[
+    %{id: 1, name: "Analytics", emoji: "📊"},
+    %{id: 2, name: "Reports", emoji: "📄"},
+    %{id: 3, name: "Settings", emoji: "⚙️"}
+  ]}
+  />
+  """
+  attr :title, :string, default: nil
+  attr :max_items, :integer, default: 5
+  attr :current, :string, default: nil
+  attr :features, :list, required: true
+  attr :see_more_uri, :string, default: "/hub"
+
+  defp feature_section(assigns) do
+    ~H"""
+    <div id="hubs" class="flex flex-col mt-12">
+      <div class="space-y-3">
+        <div class="grid grid-cols-1 md:grid-cols-2 relative leading-6 mb-2">
+          <small class="ml-5 font-medium text-gray-300 cursor-default">{@title}</small>
+        </div>
+
+        <%= for feature <- Enum.take(@features, @max_items) do %>
+          <.sidebar_feature_link
+            feature={feature}
+            to={~p"/#{feature.name |> String.downcase()}"}
+            current={@current}
+          />
+        <% end %>
+
+        <%= if length(@features) > @max_items do %>
+          <.sidebar_link
+            title="See more"
+            icon="hero-rss"
+            to={@see_more_uri}
+            current={@current}
+          />
+        <% end %>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a single sidebar feature link.
+
+  Each feature link displays an emoji and name, highlights the active feature based on `@current`,
+  and navigates to the given `@to` path when clicked.
+
+  ## Example
+
+  ```heex
+  <.sidebar_feature_link
+    feature=%{id: 1, name: "Analytics", emoji: "📊"}
+    to="/analytics"
+    current="/analytics"
+  />
+  """
+
+  defp sidebar_feature_link(assigns) do
+    ~H"""
+    <.link
+      id={"hub-#{@feature.id}"}
+      navigate={@to}
+      class={[
+        "h-7 flex items-center hover:text-white border-l-4 hover:border-white",
+        sidebar_link_text_color(@to, @current),
+        sidebar_link_border_color(@to, @current)
+      ]}
+    >
+      <div class="text-lg leading-6 w-[56px] flex justify-center">
+        <span class="relative">
+          {@feature.emoji}
+        </span>
+      </div>
+      <span class="text-sm font-medium">
+        {@feature.name}
+      </span>
+    </.link>
     """
   end
 end
