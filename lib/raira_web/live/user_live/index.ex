@@ -39,6 +39,10 @@ defmodule RairaWeb.UserLive.Index do
             <button phx-click="approve_user" phx-value-id={user.id}>
               Approve
             </button>
+
+            <button phx-click="reject_user" phx-value-id={user.id}>
+              Reject
+            </button>
           </:action>
           <:action :let={{id, user}}>
             <.link
@@ -64,6 +68,33 @@ defmodule RairaWeb.UserLive.Index do
      socket
      |> assign(:page_title, "Listing Users")
      |> stream(:users, list_users(socket.assigns.current_scope))}
+  end
+
+  def handle_event("reject_user", %{"id" => id}, socket) do
+    user = Accounts.get_user!(id)
+    # user = %{user | reject_reason: "TEST"}
+
+    case Accounts.Approvals.reject(user, "TEST") do
+      {:ok, updated} ->
+        IO.inspect(updated, label: "✅ APPROVED")
+
+        {:noreply,
+         socket
+         |> put_flash(
+           :info,
+           "Registered successfully"
+         )
+         |> stream_insert(:users, updated)}
+
+      {:error, :banned} ->
+        {:noreply, put_flash(socket, :error, "User is banned.")}
+
+      {:error, :invalid_state} ->
+        {:noreply, put_flash(socket, :error, "Only pending users can be approved.")}
+
+      {:error, %Ecto.Changeset{}} ->
+        {:noreply, put_flash(socket, :error, "Could not approve. Try reload.")}
+    end
   end
 
   def handle_event("approve_user", %{"id" => id}, socket) do
