@@ -18,31 +18,37 @@ defmodule RairaWeb.UserLive.Index do
             </.button>
           </div>
         </div>
-          <.table
-            id="users"
-            rows={@streams.users}
-            row_click={fn {_id, user} -> JS.navigate(~p"/users/#{user}") end}
-          >
-            <:col :let={{_id, user}} label="First name">{user.first_name}</:col>
-            <:col :let={{_id, user}} label="Last name">{user.last_name}</:col>
-            <:col :let={{_id, user}} label="Username">{user.username}</:col>
-            <:col :let={{_id, user}} label="Email">{user.email}</:col>
-            <:col :let={{_id, user}} label="Confirmed at">{user.confirmed_at}</:col>
-            <:action :let={{_id, user}}>
-              <div class="sr-only">
-                <.link navigate={~p"/users/#{user}"}>Show</.link>
-              </div>
-              <.link navigate={~p"/users/#{user}/edit"}>Edit</.link>
-            </:action>
-            <:action :let={{id, user}}>
-              <.link
-                phx-click={JS.push("delete", value: %{id: user.id}) |> hide("##{id}")}
-                data-confirm="Are you sure?"
-              >
-                Delete
-              </.link>
-            </:action>
-          </.table>
+        <.table
+          id="users"
+          rows={@streams.users}
+          row_click={fn {_id, user} -> JS.navigate(~p"/users/#{user}") end}
+        >
+          <:col :let={{_id, user}} label="First name">{user.first_name}</:col>
+          <:col :let={{_id, user}} label="Last name">{user.last_name}</:col>
+          <:col :let={{_id, user}} label="Username">{user.username}</:col>
+          <:col :let={{_id, user}} label="Email">{user.email}</:col>
+          <:col :let={{_id, user}} label="Status">{user.status}</:col>
+          <:action :let={{_id, user}}>
+            <div class="sr-only">
+              <.link navigate={~p"/users/#{user}"}>Show</.link>
+            </div>
+            <.link navigate={~p"/users/#{user}/edit"}>Edit</.link>
+            <!--
+            <button phx-click={JS.push("approve_user", value: %{id: user.id})}>Approve</button>
+            -->
+            <button phx-click="approve_user" phx-value-id={user.id}>
+              Approve
+            </button>
+          </:action>
+          <:action :let={{id, user}}>
+            <.link
+              phx-click={JS.push("delete", value: %{id: user.id}) |> hide("##{id}")}
+              data-confirm="Are you sure?"
+            >
+              Delete
+            </.link>
+          </:action>
+        </.table>
       </div>
     </LayoutComponents.layout>
     """
@@ -58,6 +64,32 @@ defmodule RairaWeb.UserLive.Index do
      socket
      |> assign(:page_title, "Listing Users")
      |> stream(:users, list_users(socket.assigns.current_scope))}
+  end
+
+  def handle_event("approve_user", %{"id" => id}, socket) do
+    user = Accounts.get_user!(id)
+
+    case Accounts.Approvals.approve(user) do
+      {:ok, updated} ->
+        IO.inspect(updated, label: "✅ APPROVED")
+
+        {:noreply,
+         socket
+         |> put_flash(
+           :info,
+           "Registered successfully"
+         )
+         |> stream_insert(:users, updated)}
+
+      {:error, :banned} ->
+        {:noreply, put_flash(socket, :error, "User is banned.")}
+
+      {:error, :invalid_state} ->
+        {:noreply, put_flash(socket, :error, "Only pending users can be approved.")}
+
+      {:error, %Ecto.Changeset{}} ->
+        {:noreply, put_flash(socket, :error, "Could not approve. Try reload.")}
+    end
   end
 
   @impl true
