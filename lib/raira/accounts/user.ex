@@ -19,6 +19,13 @@ defmodule Raira.Accounts.User do
     field :hex_color, Raira.EctoTypes.HexColor
     field :role, :string, default: "user"
 
+    field :status, Ecto.Enum, values: [:pending, :confirmed, :rejected], default: :pending
+    field :is_banned, :boolean, default: false
+    field :reject_reason, :string
+    field :rejected_at, :utc_datetime_usec
+    field :reapply_after, :utc_datetime_usec
+    field :attempt_count, :integer, default: 0
+
     timestamps(type: :utc_datetime)
   end
 
