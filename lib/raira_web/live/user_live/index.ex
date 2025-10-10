@@ -2,6 +2,8 @@ defmodule RairaWeb.UserLive.Index do
   use RairaWeb, :live_view
   alias RairaWeb.LayoutComponents
 
+  import RairaWeb.UserComponents
+
   alias Raira.Accounts
 
   @impl true
@@ -27,7 +29,9 @@ defmodule RairaWeb.UserLive.Index do
           <:col :let={{_id, user}} label="Last name">{user.last_name}</:col>
           <:col :let={{_id, user}} label="Username">{user.username}</:col>
           <:col :let={{_id, user}} label="Email">{user.email}</:col>
-          <:col :let={{_id, user}} label="Status">{user.status}</:col>
+          <:col :let={{_id, user}} label="Status">
+            <.user_status_badge status={user.status} size={:sm} />
+          </:col>
           <:action :let={{_id, user}}>
             <div class="sr-only">
               <.link navigate={~p"/users/#{user}"}>Show</.link>
