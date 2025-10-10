@@ -42,7 +42,11 @@ defmodule RairaWeb.CoreComponents do
   attr :id, :string, doc: "the optional id of flash container"
   attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
   attr :title, :string, default: nil
-  attr :kind, :atom, values: [:info, :error], doc: "used for styling and flash lookup"
+
+  attr :kind, :atom,
+    values: [:info, :error, :warning, :success],
+    doc: "used for styling and flash lookup"
+
   attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
 
   slot :inner_block, doc: "the optional inner block that renders the flash message"
@@ -62,10 +66,14 @@ defmodule RairaWeb.CoreComponents do
       <div class={[
         "alert w-80 sm:w-96 max-w-80 sm:max-w-96 text-wrap",
         @kind == :info && "alert-info",
-        @kind == :error && "alert-error"
+        @kind == :error && "alert-error",
+        @kind == :success && "alert-success",
+        @kind == :warning && "alert-warning"
       ]}>
         <.icon :if={@kind == :info} name="hero-information-circle" class="size-5 shrink-0" />
         <.icon :if={@kind == :error} name="hero-exclamation-circle" class="size-5 shrink-0" />
+        <.icon :if={@kind == :warning} name="hero-exclamation-circle" class="size-5 shrink-0" />
+        <.icon :if={@kind == :success} name="hero-check-circle" class="size-5 shrink-0" />
         <div>
           <p :if={@title} class="font-semibold">{@title}</p>
           <p>{msg}</p>
@@ -636,6 +644,8 @@ defmodule RairaWeb.CoreComponents do
     <div id={@id} aria-live="polite">
       <.flash kind={:info} flash={@flash} />
       <.flash kind={:error} flash={@flash} />
+      <.flash kind={:success} flash={@flash} />
+      <.flash kind={:warning} flash={@flash} />
 
       <.flash
         id="client-error"
