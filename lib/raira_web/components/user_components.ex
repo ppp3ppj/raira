@@ -78,4 +78,33 @@ defmodule RairaWeb.UserComponents do
 
   def show_current_user_modal(js \\ %JS{}), do: show_modal(js, "user-modal")
   def hide_current_user_modal(js \\ %JS{}), do: hide_modal(js, "user-modal")
+
+
+  @doc "Badge for user status: :confirmed | :pending | :rejected | :banned (optional)"
+  attr :status, :atom, required: true, values: [:confirmed, :pending, :rejected, :banned]
+  attr :size,   :atom, default: :md, values: [:sm, :md, :lg]
+  attr :class,  :string, default: nil
+  def user_status_badge(assigns) do
+    ~H"""
+    <div class={["badge", size_class(@size), color_class(@status), @class]}>
+      {label_text(@status)}
+    </div>
+    """
+  end
+
+  defp color_class(:confirmed), do: "badge-success"
+  defp color_class(:pending), do: "badge-warning"
+  defp color_class(:rejected), do: "badge-error"
+  defp color_class(:banned), do: "badge-neutral"
+  defp color_class(_), do: "badge-info"
+
+  defp label_text(:confirmed), do: "Confirmed"
+  defp label_text(:pending), do: "Pending"
+  defp label_text(:rejected), do: "Rejected"
+  defp label_text(:banned), do: "Banned"
+  defp label_text(_), do: "Info"
+
+  defp size_class(:sm), do: "badge-sm"
+  defp size_class(:lg), do: "badge-lg"
+  defp size_class(_), do: ""
 end

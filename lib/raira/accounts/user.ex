@@ -19,6 +19,13 @@ defmodule Raira.Accounts.User do
     field :hex_color, Raira.EctoTypes.HexColor
     field :role, :string, default: "user"
 
+    field :status, Ecto.Enum, values: [:pending, :confirmed, :rejected], default: :pending
+    field :is_banned, :boolean, default: false
+    field :reject_reason, :string
+    field :rejected_at, :utc_datetime_usec
+    field :reapply_after, :utc_datetime_usec
+    field :attempt_count, :integer, default: 0
+
     timestamps(type: :utc_datetime)
   end
 
@@ -26,7 +33,8 @@ defmodule Raira.Accounts.User do
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email, :first_name, :last_name, :username, :password])
-    |> put_change(:role, "user") # Force role to "user"
+    # Force role to "user"
+    |> put_change(:role, "user")
     |> unique_constraint(:username)
     |> validate_username()
     |> validate_password(opts)
@@ -168,10 +176,23 @@ defmodule Raira.Accounts.User do
   @doc false
   def changeset(user, attrs \\ %{}) do
     user
-    #|> cast(attrs, [:email, :hex_color])
-    |> cast(attrs, [:hex_color, :username, :first_name, :last_name, :email])
-    |> validate_required([:hex_color])
-    #|> cast(attrs, [:name, :email, :avatar_url, :access_type, :groups, :hex_color, :payload])
-    #|> validate_required([:hex_color])
+    # |> cast(attrs, [:email, :hex_color])
+    |> cast(attrs, [
+      :hex_color,
+      :username,
+      :first_name,
+      :last_name,
+      :email,
+      :status,
+      :is_banned,
+      :reject_reason,
+      :rejected_at,
+      :reapply_after,
+      :attempt_count
+    ])
+    |> validate_required([:hex_color, :status, :is_banned])
+
+    # |> cast(attrs, [:name, :email, :avatar_url, :access_type, :groups, :hex_color, :payload])
+    # |> validate_required([:hex_color])
   end
 end

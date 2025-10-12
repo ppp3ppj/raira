@@ -7,6 +7,8 @@ defmodule RairaWeb.LayoutComponents do
   The layout used in the non-sessios pages.
   """
 
+  attr :flash, :map, required: true, doc: "the map of flash messages"
+
   attr :current_page, :string, required: true
   attr :current_user, Raira.Accounts.User, required: true
   slot :inner_block, required: true
@@ -37,6 +39,7 @@ defmodule RairaWeb.LayoutComponents do
       </div>
     </div>
 
+    <.flash_group flash={@flash} />
     <.current_user_modal current_user={@current_user} />
     <p>Current page: {@current_page}</p>
     <p>Current username: {@current_user.username}</p>
@@ -249,7 +252,7 @@ defmodule RairaWeb.LayoutComponents do
             title="Admin"
             max_items={4}
             features={[
-              %{id: 1, name: "Dashboard", emoji: "🏠"},
+              %{id: 1, name: "Users", emoji: "👥"},
               %{id: 2, name: "Orders", emoji: "🧾"},
               %{id: 3, name: "Customers", emoji: "👥"},
               %{id: 4, name: "Reports", emoji: "📊"},
