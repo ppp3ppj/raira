@@ -500,7 +500,7 @@ defmodule RairaWeb.LayoutComponents do
         <%= if length(@features) > @max_items do %>
           <.sidebar_link
             title="See more"
-            icon="ri-rss"
+            icon="ri-apps-line"
             to={@see_more_uri}
             current={@current}
           />
@@ -538,7 +538,7 @@ defmodule RairaWeb.LayoutComponents do
       ]}
     >
       <div class="text-lg leading-6 w-[56px] flex justify-center">
-        <span class="relative">
+        <span class="relative h-6 w-6">
           {@feature.emoji}
         </span>
       </div>
