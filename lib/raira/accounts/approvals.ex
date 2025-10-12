@@ -4,8 +4,11 @@ defmodule Raira.Accounts.Approvals do
   alias Ecto.Multi
 
   def approve(%User{status: :pending, is_banned: false} = u) do
-    IO.inspect(u, label: "Approve fn")
     update(u, %{status: :confirmed, reject_reason: nil, rejected_at: nil})
+  end
+
+  def pending(%User{status: :confirmed, is_banned: false} = u) do
+    update(u, %{status: :pending, reject_reason: nil, rejected_at: nil})
   end
 
   # Fix me add and byte_size(String.trim(reason)) > 0 guard for check reason string not empty
