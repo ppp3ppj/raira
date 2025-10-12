@@ -98,25 +98,25 @@ defmodule RairaWeb.LayoutComponents do
       <%!-- Local functionality --%>
 
       <.button_item
-        icon="hero-home"
+        icon="ri-home-line"
         label="Outline (so)"
         button_attrs={["data-el-outline-toggle": true]}
       />
 
       <.button_item
-        icon="hero-home"
+        icon="ri-settings-2-line"
         label="Clients (so)"
         button_attrs={["data-el-clients-list-toggle": true]}
       />
 
       <.button_item
-        icon="hero-user"
+        icon="ri-user-line"
         label="Connected users (su)"
         button_attrs={["data-el-others-list-toggle": true]}
       />
 
       <.button_item
-        icon="hero-chat-bubble-oval-left-ellipsis"
+        icon="ri-chat-1-line"
         label="Clients (so)"
         button_attrs={["data-el-messages-list-toggle": true]}
       />
@@ -181,7 +181,7 @@ defmodule RairaWeb.LayoutComponents do
       <div class="grow"></div>
 
       <.button_item
-        icon="hero-camera"
+        icon="ri-camera"
         label="Outline (so)"
         button_attrs={["data-el-outline-toggle": true]}
       />
@@ -240,10 +240,10 @@ defmodule RairaWeb.LayoutComponents do
               </span>
             </div>
 
-            <.sidebar_link title="Home" icon="hero-home" to={~p"/"} current={@current_page} />
+            <.sidebar_link title="Home" icon="ri-home-6-line" to={~p"/"} current={@current_page} />
             <.sidebar_link
               title="Settings"
-              icon="hero-cog-8-tooth"
+              icon="ri-cog-8-tooth"
               to={~p"/settings"}
               current={@current_page}
             />
@@ -355,7 +355,7 @@ defmodule RairaWeb.LayoutComponents do
         class="hidden md:flex absolute top-0 bottom-0 left-0 transform -translate-x-full"
       >
         <.link navigate={@back_navigate}>
-          <.icon name="hero-arrow-left-line" class="align-middle mr-2 text-2xl text-gray-800" />
+          <.icon name="ri-arrow-left-line" class="align-middle mr-2 text-2xl text-gray-800" />
         </.link>
       </div>
       <h1 class="text-2xl text-gray-800 font-medium">
@@ -500,7 +500,7 @@ defmodule RairaWeb.LayoutComponents do
         <%= if length(@features) > @max_items do %>
           <.sidebar_link
             title="See more"
-            icon="hero-rss"
+            icon="ri-rss"
             to={@see_more_uri}
             current={@current}
           />

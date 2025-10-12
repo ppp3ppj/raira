@@ -15,7 +15,7 @@ defmodule RairaWeb.UserLive.Index do
           <LayoutComponents.title text="User management" />
           <div class="hidden md:flex space-x-2" role="navigation" aria-label="new notebook">
             <.button color="blue" patch={~p"/users/new"}>
-              <.icon name="hero-plus" />
+              <.icon name="ri-plus" />
               <span>New User</span>
             </.button>
           </div>

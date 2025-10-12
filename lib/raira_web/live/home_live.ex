@@ -20,7 +20,7 @@ defmodule RairaWeb.HomeLive do
               Open
             </.button>
             <.button color="blue" patch={~p"/project"}>
-              <.icon name="hero-add-line" />
+              <.icon name="ri-add-line" />
               <span>New notebook</span>
             </.button>
           </div>
