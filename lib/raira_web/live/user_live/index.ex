@@ -91,7 +91,7 @@ defmodule RairaWeb.UserLive.Index do
               </svg>
             </button>
 
-            <button class="btn btn-square">
+            <button class="btn btn-square" phx-click="pending_user" phx-value-id={user.id}>
               <svg
                 class="w-6 h-6 text-gray-800 dark:text-white"
                 aria-hidden="true"
@@ -184,6 +184,32 @@ defmodule RairaWeb.UserLive.Index do
     end
   end
 
+  def handle_event("pending_user", %{"id" => id}, socket) do
+    user = Accounts.get_user!(id)
+
+    case Accounts.Approvals.pending(user) do
+      {:ok, updated} ->
+        IO.inspect(updated, label: "✅ Pending")
+
+        {:noreply,
+         socket
+         |> put_flash(
+           :success,
+           "Pending #{user.username} successfully"
+         )
+         |> stream_insert(:users, updated)}
+
+      {:error, :banned} ->
+        {:noreply, put_flash(socket, :error, "User is banned.")}
+
+      {:error, :invalid_state} ->
+        {:noreply, put_flash(socket, :error, "Only pending users can be approved.")}
+
+      {:error, %Ecto.Changeset{}} ->
+        {:noreply, put_flash(socket, :error, "Could not approve. Try reload.")}
+    end
+  end
+
   def handle_event("approve_user", %{"id" => id}, socket) do
     user = Accounts.get_user!(id)
 
@@ -194,8 +220,8 @@ defmodule RairaWeb.UserLive.Index do
         {:noreply,
          socket
          |> put_flash(
-           :info,
-           "Registered successfully"
+           :success,
+           "Approved #{user.username} successfully"
          )
          |> stream_insert(:users, updated)}
 
