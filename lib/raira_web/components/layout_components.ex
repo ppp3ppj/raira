@@ -243,7 +243,7 @@ defmodule RairaWeb.LayoutComponents do
             <.sidebar_link title="Home" icon="ri-home-6-line" to={~p"/"} current={@current_page} />
             <.sidebar_link
               title="Settings"
-              icon="ri-cog-8-tooth"
+              icon="ri-settings-5-line"
               to={~p"/settings"}
               current={@current_page}
             />
