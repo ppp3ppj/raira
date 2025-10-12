@@ -685,4 +685,24 @@ defmodule RairaWeb.CoreComponents do
     </div>
     """
   end
+
+  @doc """
+  Renders [Remix](https://remixicon.com) icon.
+
+  ## Examples
+
+      <.remix_icon icon="cpu-line" />
+
+      <.remix_icon icon="cpu-line" class="align-middle mr-1" />
+
+  """
+  attr :icon, :string, required: true
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  def remix_icon(assigns) do
+    ~H"""
+    <i class={["ri-#{@icon}", @class]} aria-hidden="true" {@rest}></i>
+    """
+  end
 end
