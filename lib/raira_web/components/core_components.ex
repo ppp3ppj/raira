@@ -79,17 +79,17 @@ defmodule RairaWeb.CoreComponents do
         @kind == :success && "alert-success",
         @kind == :warning && "alert-warning"
       ]}>
-        <.icon :if={@kind == :info} name="ri-information-circle" class="size-5 shrink-0" />
-        <.icon :if={@kind == :error} name="ri-exclamation-circle" class="size-5 shrink-0" />
-        <.icon :if={@kind == :warning} name="ri-exclamation-circle" class="size-5 shrink-0" />
-        <.icon :if={@kind == :success} name="ri-check-circle" class="size-5 shrink-0" />
+        <.icon :if={@kind == :info} name="ri-information-fill" class="size-5 shrink-0" />
+        <.icon :if={@kind == :error} name="ri-error-warning-fill" class="size-5 shrink-0" />
+        <.icon :if={@kind == :warning} name="ri-alert-fill" class="size-5 shrink-0" />
+        <.icon :if={@kind == :success} name="ri-checkbox-circle-fill" class="size-5 shrink-0" />
         <div>
           <p :if={@title} class="font-semibold">{@title}</p>
           <p>{msg}</p>
         </div>
         <div class="flex-1" />
         <button type="button" class="group self-start cursor-pointer" aria-label={gettext("close")}>
-          <.icon name="ri-x-mark" class="size-5 opacity-40 group-hover:opacity-70" />
+          <.icon name="ri-close-line" class="size-5 opacity-40 group-hover:opacity-70" />
         </button>
       </div>
     </div>
