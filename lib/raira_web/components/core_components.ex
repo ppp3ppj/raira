@@ -55,9 +55,18 @@ defmodule RairaWeb.CoreComponents do
     assigns = assign_new(assigns, :id, fn -> "flash-#{assigns.kind}" end)
 
     ~H"""
+    <!--
     <div
       :if={msg = render_slot(@inner_block) || Phoenix.Flash.get(@flash, @kind)}
       id={@id}
+      phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
+      role="alert"
+      class="toast toast-top toast-end z-50"
+      {@rest}
+    >
+    -->
+    <div
+      :if={msg = Phoenix.Flash.get(@flash, @kind)}
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
       class="toast toast-top toast-end z-50"
@@ -641,7 +650,10 @@ defmodule RairaWeb.CoreComponents do
 
   def flash_group(assigns) do
     ~H"""
+    <!--
     <div id={@id} aria-live="polite">
+    -->
+    <div aria-live="polite">
       <.flash kind={:info} flash={@flash} />
       <.flash kind={:error} flash={@flash} />
       <.flash kind={:success} flash={@flash} />
