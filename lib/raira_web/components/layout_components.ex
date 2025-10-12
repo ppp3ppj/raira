@@ -309,7 +309,7 @@ defmodule RairaWeb.LayoutComponents do
       ]}
     >
       <span class="w-[56px] grid place-items-center">
-        <.icon name={@icon} class="text-lg leading-none" />
+        <.icon name={@icon} class="text-lg leading-none w-6 h-6" />
       </span>
       <!--
       <.icon name={@icon} class="text-lg leading-6 w-[56px] flex justify-center" />
@@ -383,7 +383,7 @@ defmodule RairaWeb.LayoutComponents do
         aria-label={@label}
         {@button_attrs}
       >
-        <.icon name={@icon} />
+        <.icon name={@icon} class="h-6 w-6" />
       </button>
     </span>
     """
