@@ -7,6 +7,8 @@ defmodule RairaWeb.LayoutComponents do
   The layout used in the non-sessios pages.
   """
 
+  attr :flash, :map, required: true, doc: "the map of flash messages"
+
   attr :current_page, :string, required: true
   attr :current_user, Raira.Accounts.User, required: true
   slot :inner_block, required: true
@@ -37,6 +39,7 @@ defmodule RairaWeb.LayoutComponents do
       </div>
     </div>
 
+    <.flash_group flash={@flash} />
     <.current_user_modal current_user={@current_user} />
     <p>Current page: {@current_page}</p>
     <p>Current username: {@current_user.username}</p>
@@ -95,25 +98,25 @@ defmodule RairaWeb.LayoutComponents do
       <%!-- Local functionality --%>
 
       <.button_item
-        icon="hero-home"
+        icon="ri-home-line"
         label="Outline (so)"
         button_attrs={["data-el-outline-toggle": true]}
       />
 
       <.button_item
-        icon="hero-home"
+        icon="ri-settings-2-line"
         label="Clients (so)"
         button_attrs={["data-el-clients-list-toggle": true]}
       />
 
       <.button_item
-        icon="hero-user"
+        icon="ri-user-line"
         label="Connected users (su)"
         button_attrs={["data-el-others-list-toggle": true]}
       />
 
       <.button_item
-        icon="hero-chat-bubble-oval-left-ellipsis"
+        icon="ri-chat-1-line"
         label="Clients (so)"
         button_attrs={["data-el-messages-list-toggle": true]}
       />
@@ -178,7 +181,7 @@ defmodule RairaWeb.LayoutComponents do
       <div class="grow"></div>
 
       <.button_item
-        icon="hero-camera"
+        icon="ri-camera"
         label="Outline (so)"
         button_attrs={["data-el-outline-toggle": true]}
       />
@@ -237,10 +240,10 @@ defmodule RairaWeb.LayoutComponents do
               </span>
             </div>
 
-            <.sidebar_link title="Home" icon="hero-home" to={~p"/"} current={@current_page} />
+            <.sidebar_link title="Home" icon="ri-home-6-line" to={~p"/"} current={@current_page} />
             <.sidebar_link
               title="Settings"
-              icon="hero-cog-8-tooth"
+              icon="ri-settings-5-line"
               to={~p"/settings"}
               current={@current_page}
             />
@@ -249,7 +252,7 @@ defmodule RairaWeb.LayoutComponents do
             title="Admin"
             max_items={4}
             features={[
-              %{id: 1, name: "Dashboard", emoji: "🏠"},
+              %{id: 1, name: "Users", emoji: "👥"},
               %{id: 2, name: "Orders", emoji: "🧾"},
               %{id: 3, name: "Customers", emoji: "👥"},
               %{id: 4, name: "Reports", emoji: "📊"},
@@ -306,7 +309,7 @@ defmodule RairaWeb.LayoutComponents do
       ]}
     >
       <span class="w-[56px] grid place-items-center">
-        <.icon name={@icon} class="text-lg leading-none" />
+        <.icon name={@icon} class="text-lg leading-none w-6 h-6" />
       </span>
       <!--
       <.icon name={@icon} class="text-lg leading-6 w-[56px] flex justify-center" />
@@ -352,7 +355,7 @@ defmodule RairaWeb.LayoutComponents do
         class="hidden md:flex absolute top-0 bottom-0 left-0 transform -translate-x-full"
       >
         <.link navigate={@back_navigate}>
-          <.icon name="hero-arrow-left-line" class="align-middle mr-2 text-2xl text-gray-800" />
+          <.icon name="ri-arrow-left-line" class="align-middle mr-2 text-2xl text-gray-800" />
         </.link>
       </div>
       <h1 class="text-2xl text-gray-800 font-medium">
@@ -380,7 +383,7 @@ defmodule RairaWeb.LayoutComponents do
         aria-label={@label}
         {@button_attrs}
       >
-        <.icon name={@icon} />
+        <.icon name={@icon} class="h-6 w-6" />
       </button>
     </span>
     """
@@ -497,7 +500,7 @@ defmodule RairaWeb.LayoutComponents do
         <%= if length(@features) > @max_items do %>
           <.sidebar_link
             title="See more"
-            icon="hero-rss"
+            icon="ri-apps-line"
             to={@see_more_uri}
             current={@current}
           />
@@ -535,7 +538,7 @@ defmodule RairaWeb.LayoutComponents do
       ]}
     >
       <div class="text-lg leading-6 w-[56px] flex justify-center">
-        <span class="relative">
+        <span class="relative h-6 w-6">
           {@feature.emoji}
         </span>
       </div>

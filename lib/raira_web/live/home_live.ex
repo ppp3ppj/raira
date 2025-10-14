@@ -11,7 +11,7 @@ defmodule RairaWeb.HomeLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <LayoutComponents.layout current_page={~p"/"} current_user={@current_scope.user}>
+    <LayoutComponents.layout current_page={~p"/"} current_user={@current_scope.user} flash={@flash}>
       <div class="p-4 md:px-12 md:py-6 max-w-screen-lg mx-auto">
         <div class="flex flex-row space-y-0 items-center pb-4 justify-between">
           <LayoutComponents.title text="Home" />
@@ -20,7 +20,7 @@ defmodule RairaWeb.HomeLive do
               Open
             </.button>
             <.button color="blue" patch={~p"/project"}>
-              <.icon name="hero-add-line" />
+              <.icon name="ri-add-line" />
               <span>New notebook</span>
             </.button>
           </div>

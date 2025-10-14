@@ -97,7 +97,7 @@ defmodule RairaWeb.FormComponents do
           />
           <div class="absolute right-2 top-1">
             <.icon_button type="button" phx-click={@randomize}>
-              <.icon name="hero-arrow-path" />
+              <.icon name="ri-arrow-path" />
             </.icon_button>
           </div>
         </div>
@@ -207,7 +207,7 @@ defmodule RairaWeb.FormComponents do
       <!--
       <.remix_icon icon="question-line" class="text-sm leading-none" />
       -->
-      <.icon name="hero-home" class="text-sm leading-none" />
+      <.icon name="ri-home" class="text-sm leading-none" />
     </span>
     """
   end
