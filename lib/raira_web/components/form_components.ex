@@ -97,7 +97,7 @@ defmodule RairaWeb.FormComponents do
           />
           <div class="absolute right-2 top-1">
             <.icon_button type="button" phx-click={@randomize}>
-              <.icon name="ri-arrow-path" />
+              <.icon name="ri-refresh-line" class="h-5 w-5" />
             </.icon_button>
           </div>
         </div>
