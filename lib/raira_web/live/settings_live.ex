@@ -19,7 +19,7 @@ defmodule RairaWeb.SettingsLive do
               Open
             </.button>
             <.button color="blue" patch={~p"/new"}>
-              <.icon name="hero-add-line" />
+              <.icon name="ri-add-line" />
               <span>New notebook</span>
             </.button>
           </div>

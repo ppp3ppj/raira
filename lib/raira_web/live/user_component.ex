@@ -70,7 +70,7 @@ defmodule RairaWeb.UserComponent do
           />
 
           <.button type="submit" disabled={not @changeset.valid?}>
-            <.icon name="hero-archive-box-arrow-down" />
+            <.icon name="ri-archive-box-arrow-down" />
             <!--
             <.remix_icon icon="save-line" />
             -->

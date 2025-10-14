@@ -12,10 +12,10 @@ defmodule RairaWeb.UserLive.Show do
         <:subtitle>This is a user record from your database.</:subtitle>
         <:actions>
           <.button navigate={~p"/users"}>
-            <.icon name="hero-arrow-left" />
+            <.icon name="ri-arrow-left" />
           </.button>
           <.button variant="primary" navigate={~p"/users/#{@user}/edit?return_to=show"}>
-            <.icon name="hero-pencil-square" /> Edit user
+            <.icon name="ri-pencil-square" /> Edit user
           </.button>
         </:actions>
       </.header>

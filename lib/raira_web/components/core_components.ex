@@ -19,7 +19,7 @@ defmodule RairaWeb.CoreComponents do
       we build on. You will use it for layout, sizing, flexbox, grid, and
       spacing.
 
-    * [Heroicons](https://heroicons.com) - see `icon/1` for usage.
+    * [Remixicons](https://remixicon.com) - see `icon/1` for usage.
 
     * [Phoenix.Component](https://hexdocs.pm/phoenix_live_view/Phoenix.Component.html) -
       the component system used by Phoenix. Some components, such as `<.link>`
@@ -79,17 +79,17 @@ defmodule RairaWeb.CoreComponents do
         @kind == :success && "alert-success",
         @kind == :warning && "alert-warning"
       ]}>
-        <.icon :if={@kind == :info} name="hero-information-circle" class="size-5 shrink-0" />
-        <.icon :if={@kind == :error} name="hero-exclamation-circle" class="size-5 shrink-0" />
-        <.icon :if={@kind == :warning} name="hero-exclamation-circle" class="size-5 shrink-0" />
-        <.icon :if={@kind == :success} name="hero-check-circle" class="size-5 shrink-0" />
+        <.icon :if={@kind == :info} name="ri-information-fill" class="size-5 shrink-0" />
+        <.icon :if={@kind == :error} name="ri-error-warning-fill" class="size-5 shrink-0" />
+        <.icon :if={@kind == :warning} name="ri-alert-fill" class="size-5 shrink-0" />
+        <.icon :if={@kind == :success} name="ri-checkbox-circle-fill" class="size-5 shrink-0" />
         <div>
           <p :if={@title} class="font-semibold">{@title}</p>
           <p>{msg}</p>
         </div>
         <div class="flex-1" />
         <button type="button" class="group self-start cursor-pointer" aria-label={gettext("close")}>
-          <.icon name="hero-x-mark" class="size-5 opacity-40 group-hover:opacity-70" />
+          <.icon name="ri-close-line" class="size-5 opacity-40 group-hover:opacity-70" />
         </button>
       </div>
     </div>
@@ -290,7 +290,7 @@ defmodule RairaWeb.CoreComponents do
   defp error(assigns) do
     ~H"""
     <p class="mt-1.5 flex gap-2 items-center text-sm text-error">
-      <.icon name="hero-exclamation-circle" class="size-5" />
+      <.icon name="ri-exclamation-circle" class="size-5" />
       {render_slot(@inner_block)}
     </p>
     """
@@ -410,29 +410,22 @@ defmodule RairaWeb.CoreComponents do
   end
 
   @doc """
-  Renders a [Heroicon](https://heroicons.com).
-
-  Heroicons come in three styles – outline, solid, and mini.
-  By default, the outline style is used, but solid and mini may
-  be applied by using the `-solid` and `-mini` suffix.
-
-  You can customize the size and colors of the icons by setting
-  width, height, and background color classes.
-
-  Icons are extracted from the `deps/heroicons` directory and bundled within
-  your compiled app.css by the plugin in `assets/vendor/heroicons.js`.
+  Renders [Remix](https://remixicon.com) icon.
 
   ## Examples
 
-      <.icon name="hero-x-mark" />
-      <.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
+      <.remix_icon icon="cpu-line" />
+
+      <.remix_icon icon="cpu-line" class="align-middle mr-1" />
+
   """
   attr :name, :string, required: true
-  attr :class, :string, default: "size-4"
+  attr :class, :any, default: nil
+  attr :rest, :global
 
-  def icon(%{name: "hero-" <> _} = assigns) do
+  def icon(%{name: "ri" <> _} = assigns) do
     ~H"""
-    <span class={[@name, @class]} />
+    <i class={[@name, @class]} aria-hidden="true" {@rest}></i>
     """
   end
 
@@ -668,7 +661,7 @@ defmodule RairaWeb.CoreComponents do
         hidden
       >
         {gettext("Attempting to reconnect")}
-        <.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
+        <.icon name="ri-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
       </.flash>
 
       <.flash
@@ -680,9 +673,10 @@ defmodule RairaWeb.CoreComponents do
         hidden
       >
         {gettext("Attempting to reconnect")}
-        <.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
+        <.icon name="ri-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
       </.flash>
     </div>
     """
   end
+
 end
