@@ -333,7 +333,7 @@ defmodule Raira.Accounts do
   def update_user(%Raira.Accounts.User{} = user, attrs \\ %{}) do
     IO.inspect(user.hex_color, label: "Current color")
     IO.inspect(attrs, label: "Attrs")
-    #changeset = Raira.Accounts.User.changeset(user, attrs)
+    # changeset = Raira.Accounts.User.changeset(user, attrs)
 
     # FIXME: It's not good performance to do this pattern when update like this
     fresh_user = Repo.get!(User, user.id)
@@ -362,7 +362,6 @@ defmodule Raira.Accounts do
     #  {:ok, user}
     # end
   end
-
 
   @doc """
   Notifies interested processes about user data change.
@@ -401,14 +400,77 @@ defmodule Raira.Accounts do
     Phoenix.PubSub.unsubscribe(Raira.PubSub, "users:#{user_id}")
   end
 
-  # --- LIST USER
+  @doc """
+  Lists all users.
+
+  ## Examples
+
+      iex> list_users()
+      [%User{}, ...]
+
+      iex> list_users(%{exclude_user_id: "550e8400-e29b-41d4-a716-446655440000"})
+      [%User{}, ...]  # All users except the one with the UUID
+  """
   def list_users(), do: list_users(%{})
 
   def list_users(scope) when is_map(scope) do
-    User
-    |> order_by([u], asc: u.inserted_at)
-    |> Repo.all()
+    query =
+      User
+      |> order_by([u], asc: u.inserted_at)
+
+    query =
+      case Map.get(scope, :exclude_user_id) do
+        nil ->
+          query
+
+        user_id when is_binary(user_id) ->
+          where(query, [u], u.id != ^user_id)
+
+        _ ->
+          query
+      end
+
+    Repo.all(query)
   end
 
   def list_user(_other), do: list_users(%{})
+
+  @doc """
+  Lists all users excluding the current user.
+
+  ## Examples
+
+      iex> list_users_except_current(current_user)
+      [%User{}, ...]  # All users except current_user
+
+      iex> list_users_except_current("550e8400-e29b-41d4-a716-446655440000")
+      [%User{}, ...]  # All users except the one with this UUID
+  """
+  def list_users_except_current(%User{id: user_id}) when is_binary(user_id) do
+    list_users(%{exclude_user_id: user_id})
+  end
+
+  def list_users_except_current(user_id) when is_binary(user_id) do
+    list_users(%{exclude_user_id: user_id})
+  end
+
+  @doc """
+  Lists users that can be edited/approved by the current user.
+  Excludes the current user from the list.
+
+  ## Examples
+
+      iex> list_manageable_users(current_user)
+      [%User{}, ...]  # All users except current_user
+
+      iex> list_manageable_users("550e8400-e29b-41d4-a716-446655440000")
+      [%User{}, ...]  # All users except the one with this UUID
+  """
+  def list_manageable_users(%User{} = current_user) do
+    list_users_except_current(current_user)
+  end
+
+  def list_manageable_users(current_user_id) when is_binary(current_user_id) do
+    list_users_except_current(current_user_id)
+  end
 end

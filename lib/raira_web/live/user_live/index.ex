@@ -280,6 +280,6 @@ defmodule RairaWeb.UserLive.Index do
   end
 
   defp list_users(current_scope) do
-    Accounts.list_users(current_scope)
+    Accounts.list_manageable_users(current_scope.user.id)
   end
 end
