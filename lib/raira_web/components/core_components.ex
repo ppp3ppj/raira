@@ -67,7 +67,7 @@ defmodule RairaWeb.CoreComponents do
     -->
     <div
       :if={msg = Phoenix.Flash.get(@flash, @kind)}
-      phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
+      phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide_flash()}
       role="alert"
       class="toast toast-top toast-end z-50"
       {@rest}
@@ -94,6 +94,15 @@ defmodule RairaWeb.CoreComponents do
       </div>
     </div>
     """
+  end
+
+  defp hide_flash(js \\ %JS{}) do
+    JS.hide(js,
+      time: 200,
+      transition:
+        {"transition-all ease-in duration-200", "opacity-100 translate-y-0 sm:scale-100",
+         "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"}
+    )
   end
 
   @doc """

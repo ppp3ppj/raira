@@ -68,7 +68,9 @@ defmodule RairaWeb.Layouts do
       </div>
     </main>
 
+    <!--
     <.flash_group flash={@flash} />
+    -->
     """
   end
 
