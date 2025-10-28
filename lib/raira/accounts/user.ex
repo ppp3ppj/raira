@@ -36,6 +36,8 @@ defmodule Raira.Accounts.User do
     # Force role to "user"
     |> put_change(:role, "user")
     |> unique_constraint(:username)
+    # FIXME: Always assign a random hex color for hex_color
+    |> put_change(:hex_color, Raira.EctoTypes.HexColor.random())
     |> validate_username()
     |> validate_password(opts)
   end
@@ -47,6 +49,8 @@ defmodule Raira.Accounts.User do
     |> cast(attrs, [:email, :first_name, :last_name, :username, :password, :role])
     |> validate_inclusion(:role, ["admin", "user"])
     |> unique_constraint(:username)
+    # FIXME: Always assign a random hex color for hex_color
+    |> put_change(:hex_color, Raira.EctoTypes.HexColor.random())
     |> validate_username()
     |> validate_password(opts)
   end
