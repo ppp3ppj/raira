@@ -7,7 +7,8 @@ defmodule Raira.Projects.Project do
   schema "projects" do
     field :name, :string
     field :description, :string
-    field :status, :string
+    #field :status, :string
+    field :status, Ecto.Enum, values: [:active, :archived, :completed], default: :active
     field :user_id, :binary_id
 
     timestamps(type: :utc_datetime)
