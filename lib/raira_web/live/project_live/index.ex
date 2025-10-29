@@ -11,7 +11,7 @@ defmodule RairaWeb.ProjectLive.Index do
         Listing Projects
         <:actions>
           <.button variant="primary" navigate={~p"/projects/new"}>
-            <.icon name="ri-plus" /> New Project
+            <.icon name="ri-add-line" /> New Project
           </.button>
         </:actions>
       </.header>
