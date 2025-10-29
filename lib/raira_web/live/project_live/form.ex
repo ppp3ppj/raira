@@ -16,7 +16,16 @@ defmodule RairaWeb.ProjectLive.Form do
       <.form for={@form} id="project-form" phx-change="validate" phx-submit="save">
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:description]} type="textarea" label="Description" />
+        <!--
         <.input field={@form[:status]} type="text" label="Status" />
+        -->
+        <.input
+          field={@form[:status]}
+          type="select"
+          label="Status"
+          options={status_options()}
+          prompt="Choose a status"
+        />
         <footer>
           <.button phx-disable-with="Saving..." variant="primary">Save Project</.button>
           <.button navigate={return_path(@current_scope, @return_to, @project)}>Cancel</.button>
@@ -24,6 +33,14 @@ defmodule RairaWeb.ProjectLive.Form do
       </.form>
     </Layouts.app>
     """
+  end
+
+  defp status_options do
+    [
+      {"Active", :active},
+      {"Archived", :archived},
+      {"Completed", :completed}
+    ]
   end
 
   @impl true
