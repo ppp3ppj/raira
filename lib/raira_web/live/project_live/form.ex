@@ -1,5 +1,6 @@
 defmodule RairaWeb.ProjectLive.Form do
   use RairaWeb, :live_view
+  alias RairaWeb.LayoutComponents
 
   alias Raira.Projects
   alias Raira.Projects.Project
@@ -7,6 +8,31 @@ defmodule RairaWeb.ProjectLive.Form do
   @impl true
   def render(assigns) do
     ~H"""
+    <LayoutComponents.drawer_layout current_page={~p"/"} current_user={@current_scope.user}>
+      <div class="relative w-full max-w-screen-lg px-4 sm:pl-8 sm:pr-16 md:pl-16 pt-4 sm:py-5 mx-auto">
+        <div class="flex flex-row space-y-0 items-center pb-4 justify-between">
+          <LayoutComponents.title text="Project" />
+        </div>
+
+          <.form for={@form} id="project-form" phx-change="validate" phx-submit="save">
+            <.input field={@form[:name]} type="text" label="Name" />
+            <.input field={@form[:description]} type="textarea" label="Description" />
+            <.input
+              field={@form[:status]}
+              type="select"
+              label="Status"
+              options={status_options()}
+              prompt="Choose a status"
+            />
+            <footer>
+              <.button phx-disable-with="Saving..." variant="primary">Save Project</.button>
+              <.button navigate={return_path(@current_scope, @return_to, @project)}>Cancel</.button>
+            </footer>
+          </.form>
+      </div>
+    </LayoutComponents.drawer_layout>
+
+    <!--
     <Layouts.app flash={@flash} current_scope={@current_scope}>
       <.header>
         {@page_title}
@@ -16,9 +42,7 @@ defmodule RairaWeb.ProjectLive.Form do
       <.form for={@form} id="project-form" phx-change="validate" phx-submit="save">
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:description]} type="textarea" label="Description" />
-        <!--
         <.input field={@form[:status]} type="text" label="Status" />
-        -->
         <.input
           field={@form[:status]}
           type="select"
@@ -32,6 +56,7 @@ defmodule RairaWeb.ProjectLive.Form do
         </footer>
       </.form>
     </Layouts.app>
+    -->
     """
   end
 
@@ -74,7 +99,13 @@ defmodule RairaWeb.ProjectLive.Form do
 
   @impl true
   def handle_event("validate", %{"project" => project_params}, socket) do
-    changeset = Projects.change_project(socket.assigns.current_scope, socket.assigns.project, project_params)
+    changeset =
+      Projects.change_project(
+        socket.assigns.current_scope,
+        socket.assigns.project,
+        project_params
+      )
+
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
@@ -83,7 +114,11 @@ defmodule RairaWeb.ProjectLive.Form do
   end
 
   defp save_project(socket, :edit, project_params) do
-    case Projects.update_project(socket.assigns.current_scope, socket.assigns.project, project_params) do
+    case Projects.update_project(
+           socket.assigns.current_scope,
+           socket.assigns.project,
+           project_params
+         ) do
       {:ok, project} ->
         {:noreply,
          socket
