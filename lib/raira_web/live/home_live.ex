@@ -31,7 +31,7 @@ defmodule RairaWeb.HomeLive do
             <.button color="gray" outlined navigate={~p"/open/storage"}>
               Open
             </.button>
-            <.button color="blue" patch={~p"/project"}>
+            <.button color="blue" patch={~p"/projects/new"}>
               <.icon name="ri-add-line" />
               <span>New notebook</span>
             </.button>
