@@ -12,10 +12,10 @@ defmodule RairaWeb.ProjectLive.Show do
         <:subtitle>This is a project record from your database.</:subtitle>
         <:actions>
           <.button navigate={~p"/projects"}>
-            <.icon name="hero-arrow-left" />
+            <.icon name="ri-arrow-go-back-line" class="h-4 w-4" />
           </.button>
           <.button variant="primary" navigate={~p"/projects/#{@project}/edit?return_to=show"}>
-            <.icon name="hero-pencil-square" /> Edit project
+            <.icon name="ri-edit-line" class="h-4 w-4" /> Edit project
           </.button>
         </:actions>
       </.header>
