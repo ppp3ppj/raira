@@ -71,6 +71,10 @@ defmodule RairaWeb.Router do
       #live "/users/new", UserLive.Form, :new
       #live "/users/:id", UserLive.Show, :show
       #live "/users/:id/edit", UserLive.Form, :edit
+      live "/projects", ProjectLive.Index, :index
+      live "/projects/new", ProjectLive.Form, :new
+      live "/projects/:id", ProjectLive.Show, :show
+      live "/projects/:id/edit", ProjectLive.Form, :edit
     end
 
     post "/users/update-password", UserSessionController, :update_password

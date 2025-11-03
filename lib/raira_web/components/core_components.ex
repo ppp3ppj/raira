@@ -688,4 +688,23 @@ defmodule RairaWeb.CoreComponents do
     """
   end
 
+  slot :inner_block, required: true
+  slot :actions
+
+  def no_entries(assigns) do
+    ~H"""
+    <div class="p-5 flex space-x-4 items-center border border-gray-200 rounded-lg">
+      <div>
+        <.icon name="ri-windy-line" class="text-gray-400 text-xl" />
+      </div>
+      <div class="grow flex items-center justify-between">
+        <div class="text-gray-600">
+          {render_slot(@inner_block)}
+        </div>
+        {render_slot(@actions)}
+      </div>
+    </div>
+    """
+  end
+
 end
