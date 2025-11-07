@@ -76,6 +76,13 @@ defmodule RairaWeb.Router do
       live "/projects/:id", ProjectLive.Show, :show
       live "/projects/:id/edit", ProjectLive.Form, :edit
 
+      # Project tabs
+      #live "/projects/:id", ProjectLive.Show, :overview
+      live "/projects/:id/suites", ProjectLive.Show, :suites
+      #live "/projects/:id/runs", ProjectLive.Show, :runs
+      live "/projects/:id/stats", ProjectLive.Show, :stats
+      live "/projects/:id/settings", ProjectLive.Show, :settings
+
       # FIXME: REMOVE IT
       live "/suites", SuiteLive.Index, :index
       live "/suites/new", SuiteLive.Form, :new
