@@ -75,6 +75,12 @@ defmodule RairaWeb.Router do
       live "/projects/new", ProjectLive.Form, :new
       live "/projects/:id", ProjectLive.Show, :show
       live "/projects/:id/edit", ProjectLive.Form, :edit
+
+      # FIXME: REMOVE IT
+      live "/suites", SuiteLive.Index, :index
+      live "/suites/new", SuiteLive.Form, :new
+      live "/suites/:id", SuiteLive.Show, :show
+      live "/suites/:id/edit", SuiteLive.Form, :edit
     end
 
     post "/users/update-password", UserSessionController, :update_password
