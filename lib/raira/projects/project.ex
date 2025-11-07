@@ -11,6 +11,8 @@ defmodule Raira.Projects.Project do
     field :status, Ecto.Enum, values: [:active, :archived, :completed], default: :active
     field :user_id, :binary_id
 
+    has_many :suites, Raira.Testing.Suite, on_delete: :delete_all
+
     timestamps(type: :utc_datetime)
   end
 
